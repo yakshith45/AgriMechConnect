@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact AgriMachConnect by email.">
+    <title>Contact Us | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="landing-page about-page contact-page">
+    <header class="landing-header">
+        <a href="/index.html" class="logo-wrap site-brand" aria-label="AgriMachConnect Home">
+            <img src="/assets/images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect leaf and gear logo" class="logo-svg">
+            <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+        </a>
+        <nav class="landing-nav" aria-label="Main navigation">
+            <a href="/index.html" class="landing-about-link">Home</a>
+            <a href="/pages/public/aboutus.html" class="landing-about-link">About Us</a>
+            <a href="/pages/auth/login.html" class="landing-login-link">Login</a>
+            <a href="/pages/auth/register.html?role=farmer" class="btn btn-sm btn-accent">Register</a>
+        </nav>
+    </header>
+
+    <div class="contact-page-backdrop" aria-hidden="true">
+        <span class="contact-aura contact-aura-one"></span>
+        <span class="contact-aura contact-aura-two"></span>
+        <span class="contact-trail contact-trail-one"></span>
+        <span class="contact-trail contact-trail-two"></span>
+        <span class="contact-leaf contact-leaf-one"></span>
+        <span class="contact-leaf contact-leaf-two"></span>
+        <span class="contact-leaf contact-leaf-three"></span>
+        <span class="contact-particle contact-particle-one"></span>
+        <span class="contact-particle contact-particle-two"></span>
+        <span class="contact-particle contact-particle-three"></span>
+    </div>
+
+    <main class="about-page-main contact-page-main">
+        <section class="contact-page-cta" aria-labelledby="contactTitle">
+            <div class="contact-page-copy">
+                <span class="contact-page-eyebrow"><span aria-hidden="true"></span> Get in touch</span>
+                <h1 id="contactTitle">Let's grow <span>together.</span></h1>
+                <p>Have a question about AgriMachConnect? We’re happy to hear from you. Send us an email and we’ll get back to you.</p>
+                <div class="contact-page-points">
+                    <span><span aria-hidden="true">✓</span> Questions and feedback welcome</span>
+                    <span><span aria-hidden="true">✓</span> We’re here to support your farm</span>
+                </div>
+            </div>
+            <div class="contact-page-card">
+                <span class="contact-page-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                        <path d="m3 7 9 6 9-6"></path>
+                    </svg>
+                </span>
+                <span class="contact-page-card-label">Email us</span>
+                <a class="contact-page-email" href="mailto:sulliayakshith@gmail.com">
+                    sulliayakshith@gmail.com
+                </a>
+                <span class="contact-page-card-note">Opens your email app</span>
+                <a class="contact-page-button" href="mailto:sulliayakshith@gmail.com">
+                    Write us an email <span aria-hidden="true">↗</span>
+                </a>
+                <div class="contact-page-divider" aria-hidden="true"></div>
+                <h2 class="contact-page-form-title">Send us a message</h2>
+                <p class="contact-page-form-note">Submitting opens a Gmail draft. Your message is not sent until you review and send it in Gmail.</p>
+                <form class="contact-page-form" id="contactForm" novalidate>
+                    <div class="contact-page-field">
+                        <label for="contactName">Name</label>
+                        <input id="contactName" name="name" type="text" autocomplete="name" maxlength="100" required>
+                    </div>
+                    <div class="contact-page-field">
+                        <label for="contactEmail">Email</label>
+                        <input id="contactEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+                    </div>
+                    <div class="contact-page-field">
+                        <label for="contactSubject">Subject</label>
+                        <input id="contactSubject" name="subject" type="text" maxlength="150" required>
+                    </div>
+                    <div class="contact-page-field">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="message" rows="5" maxlength="5000" required></textarea>
+                    </div>
+                    <p class="contact-page-form-feedback" id="contactFormFeedback" role="status" aria-live="polite"></p>
+                    <button class="contact-page-button contact-page-submit" type="submit">
+                        Open Gmail draft <span aria-hidden="true">↗</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="about-page-footer">
+        <a href="/index.html" class="about-footer-brand site-brand" aria-label="AgriMachConnect home">
+            <img src="/assets/images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect leaf and gear logo">
+            <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+        </a>
+        <p>Connecting farms with the machinery that helps them grow.</p>
+        <nav aria-label="Footer navigation">
+            <a href="/index.html">Home</a>
+            <a href="/pages/public/aboutus.html">About Us</a>
+        </nav>
+        <div class="about-footer-bottom">© 2026 AgriMachConnect. All rights reserved.</div>
+    </footer>
+    <script src="/assets/js/pages/public/contact.js" defer></script>
+</body>
+</html>

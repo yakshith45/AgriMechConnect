@@ -1,4 +1,6 @@
-# Supabase Setup Guide for AgriMechConnect
+# Future Supabase Migration Notes for AgriMechConnect
+
+> **Not active in the current application.** The backend currently connects to PostgreSQL using `DB_*` variables and the Node `pg` package. This document is a draft for a possible hosted database migration; do not treat it as the current deployment procedure.
 
 This guide walks you through setting up a free [Supabase](https://supabase.com/) project, running the database schema, and connecting the backend.
 
@@ -21,7 +23,7 @@ This guide walks you through setting up a free [Supabase](https://supabase.com/)
 
 1. In your Supabase project dashboard, click on the **SQL Editor** tab (the `>_` icon on the left sidebar).
 2. Click **New query**.
-3. Open [database/supabase_schema.sql](file:///c:/Users/ajsul/Downloads/Agri%20Mech%20Connect%20%203/Agri%20Mech%20Connect/database/supabase_schema.sql).
+3. Open [database/supabase/schema.sql](../database/supabase/schema.sql).
 4. Copy the entire content and paste it into the Supabase SQL Editor.
 5. Click **Run** (or press `Ctrl+Enter`).
 6. You should see `Success. No rows returned`.

@@ -1,4 +1,6 @@
-# Cloudinary Setup Guide for AgriMechConnect
+# Future Cloudinary Integration Notes for AgriMechConnect
+
+> **Not active in the current application.** Machinery images currently use frontend assets and listing image URLs. The backend has no Cloudinary SDK or upload endpoint. This document is a proposal for a future integration, not a working setup guide.
 
 This guide walks you through setting up a free [Cloudinary](https://cloudinary.com/) account, creating an upload preset for machinery photos, and connecting the backend & frontend.
 
@@ -28,7 +30,7 @@ This guide walks you through setting up a free [Cloudinary](https://cloudinary.c
 
 ---
 
-## 3. Backend Integration (`backend/src/config/cloudinary.js`)
+## 3. Proposed backend integration
 
 Install the Cloudinary Node SDK:
 ```bash
