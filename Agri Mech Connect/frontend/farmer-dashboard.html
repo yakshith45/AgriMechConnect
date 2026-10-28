@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find real agricultural machinery available to rent near your confirmed location.">
+    <title>Farmer Dashboard | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/marketplace.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="nearby-marketplace-page">
+<header>
+    <a href="index.html" class="logo-wrap site-brand" aria-label="AgriMachConnect Home">
+        <img src="images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect" class="logo-svg">
+        <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+    </a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" type="button">☰</button>
+    <nav id="mainNav" aria-label="Main navigation">
+        <div class="nav-links">
+            <a href="farmer-dashboard.html" class="active">Available Machinery</a>
+            <a href="my-bookings.html">My Bookings</a>
+            <a href="index.html" id="logoutLink" class="btn btn-sm btn-outline">Log out</a>
+        </div>
+    </nav>
+</header>
+
+<main class="dashboard nearby-marketplace">
+    <section class="nearby-hero">
+        <div>
+            <span class="nearby-eyebrow">YOUR LOCAL MACHINERY MARKETPLACE</span>
+            <h1>Available Agricultural Machinery Near Sullia</h1>
+            <p>Browse real owner listings, compare nearby options, and request a rental for your preferred time.</p>
+        </div>
+        <div class="farmer-location-chip">
+            <svg class="market-icon market-icon-gold" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            <span><small>YOUR CONFIRMED LOCATION</small><strong id="farmerLocationName">Loading saved location…</strong></span>
+            <a href="select-role-location.html">Change</a>
+        </div>
+    </section>
+
+    <section class="marketplace-filters" aria-label="Machinery filters">
+        <div class="filter-section-heading">
+            <div><span class="market-step">1</span><strong><svg class="market-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h18M12 3v18M5 5l14 14M19 5 5 19"></path></svg>How far would you like to search?</strong></div>
+            <span class="filter-note">Distance is measured from your saved location</span>
+        </div>
+        <div class="radius-filter" role="group" aria-label="Maximum distance">
+            <button type="button" class="radius-button" data-radius="5">Within 5 km</button>
+            <button type="button" class="radius-button" data-radius="10">Within 10 km</button>
+            <button type="button" class="radius-button active" data-radius="25" aria-pressed="true">Within 25 km</button>
+        </div>
+
+        <div class="filter-section-heading category-heading">
+            <div><span class="market-step">2</span><strong><svg class="market-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg>Choose a machinery category</strong></div>
+            <span class="filter-note">Select a category to narrow the listings</span>
+        </div>
+        <button type="button" id="showAllCategories" class="market-category-reset" aria-pressed="true">Show all seven categories</button>
+        <div id="categoryCards" class="market-category-grid" role="group" aria-label="Machinery category">
+            <button type="button" class="market-category-card" data-category="tractor" aria-pressed="false">
+                <img class="market-category-image" src="images/Mahindra%20Tractor%20in%20Sunny%20Fields.png" alt="Tractor in a field" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="tractor" hidden><span aria-hidden="true">🚜</span><small>Tractor sample unavailable</small></span>
+                <strong>Tractor</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="harvester" aria-pressed="false">
+                <img class="market-category-image" src="images/8.%20Combine%20Harvester%20Working%2C%20Uses%2C%20and%20Importance-min%20(1)_0.jpg.jpeg" alt="Combine harvester in a crop field" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="harvester" hidden><span aria-hidden="true">🌾</span><small>Harvester sample unavailable</small></span>
+                <strong>Harvester</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="rotavator" aria-pressed="false">
+                <img class="market-category-image" src="images/Tractor-Mounted-Rotavator.jpg" alt="Tractor-mounted rotary tiller cultivating field soil" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="rotavator" hidden><span aria-hidden="true">⚙️</span><small>Rotavator sample unavailable</small></span>
+                <strong>Tiller / Rotavator</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="power-tiller" aria-pressed="false">
+                <img class="market-category-image" src="images/Walk-Behind-Power-Tiller.jpg" alt="Farmer operating a walk-behind power tiller in a field" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="power-tiller" hidden><span aria-hidden="true">⚙️</span><small>Power tiller sample unavailable</small></span>
+                <strong>Power Tiller</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="adike-sprayer" aria-pressed="false">
+                <img class="market-category-image" src="images/Areca%20Palm%20Orchard%20Sprayer%20in%20Mist.png" alt="Sprayer working in an arecanut orchard" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="adike-sprayer" hidden><span aria-hidden="true">🌴</span><small>Adike sprayer sample unavailable</small></span>
+                <strong>Adike (Arecanut) Sprayer</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="drone" aria-pressed="false">
+                <img class="market-category-image" src="images/Agricultural%20Drone%20Spraying%20Green%20Crops.png" alt="Agricultural drone spraying crops" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="drone" hidden><span aria-hidden="true">🛸</span><small>Drone sample unavailable</small></span>
+                <strong>Agricultural Drone</strong>
+            </button>
+            <button type="button" class="market-category-card" data-category="trailer" aria-pressed="false">
+                <img class="market-category-image" src="images/trailer.jpg" alt="Farm trailer" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                <span class="market-category-placeholder" data-category="trailer" hidden><span aria-hidden="true">🚛</span><small>Trailer sample unavailable</small></span>
+                <strong>Trailer</strong>
+            </button>
+        </div>
+
+        <div class="market-extra-filters">
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>Machinery, owner or specifications</span><input id="machinerySearchInput" type="search" placeholder="Search name, brand, model or specifications"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Pickup village / address</span><input id="villageFilter" type="search" placeholder="Filter by pickup village or address"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v18M3 6h6M3 18h6"></path><path d="M14 6h7M14 12h7M14 18h7"></path></svg>Minimum price (₹)</span><input id="minPrice" type="number" min="0" step="1" placeholder="Any"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v18M3 6h6M3 18h6"></path><path d="M14 6h7M14 12h7M14 18h7"></path></svg>Maximum price (₹)</span><input id="maxPrice" type="number" min="0" step="1" placeholder="Any"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 7v5l3 2"></path></svg>Availability</span><select id="availabilityFilter"><option value="any">Available for selected time</option><option value="no_restrictions">No owner-set date/time limits</option></select></label>
+            <label class="market-search-field" id="tractorHorsepowerFilter"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"></path></svg>Tractor power</span><select id="tractorHorsepowerRange"><option value="">Any horsepower</option><option value="20-30">20–30 HP</option><option value="31-40">31–40 HP</option><option value="41-50">41–50 HP</option><option value="above-50">Above 50 HP</option></select></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10M7 21h10M9 3c0 4 6 5 6 9s-6 5-6 9"></path><path d="M8 8h8M8 16h8"></path></svg>Adike sprayer tank capacity</span><select id="sprayerTankCapacity"><option value="">Any capacity</option><option value="25">25 litres</option></select></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Booking date</span><input id="availabilityDate" type="date"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Start time</span><input id="availabilityStart" type="time"></label>
+            <label class="market-search-field"><span><svg class="market-field-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>End time</span><input id="availabilityEnd" type="time"></label>
+        </div>
+        <p id="filterMessage" class="market-filter-message" role="alert" aria-live="polite"></p>
+    </section>
+
+    <section class="market-results-section" aria-labelledby="resultsTitle">
+        <div class="market-results-heading">
+            <div>
+                <h2 id="resultsTitle"><svg class="market-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg>Nearby machinery</h2>
+                <p id="resultsSummary">Checking real owner listings and availability…</p>
+            </div>
+            <div class="market-view-toggle" role="group" aria-label="Results view">
+                <button type="button" id="showListView" class="active" aria-pressed="true"><svg class="market-button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"></path></svg>List</button>
+                <button type="button" id="showMapView" aria-pressed="false"><svg class="market-button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6 9 3l6 3 6-3v15l-6 3-6-3-6 3V6Z"></path><path d="M9 3v15M15 6v15"></path></svg>Map</button>
+            </div>
+        </div>
+        <div id="machineryError" class="market-error" role="alert" hidden></div>
+        <div id="machineryList" class="market-machinery-grid" aria-live="polite"></div>
+        <div id="machineryMapSection" class="market-map-section" hidden>
+            <div id="machineryMap" class="market-map" role="application" aria-label="Farmer and nearby machinery map"></div>
+            <p class="market-map-attribution">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. Tiles by <a href="https://www.openstreetmap.de/" target="_blank" rel="noreferrer">OpenStreetMap.de</a>.</p>
+        </div>
+    </section>
+
+    <section class="farmer-bookings-section" aria-labelledby="farmerBookingsTitle">
+        <div class="market-results-heading">
+            <div><h2 id="farmerBookingsTitle"><svg class="market-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18m5 2-3 3-2-2"></path></svg>Your booking requests</h2><p>Pending, accepted, and past requests from this account.</p></div>
+            <a href="my-bookings.html" class="market-text-link">View all bookings →</a>
+        </div>
+        <div id="farmerBookingList" class="farmer-booking-list"></div>
+    </section>
+</main>
+
+<dialog id="machineryDialog" class="machinery-dialog">
+    <form id="bookingForm" class="machinery-dialog-card">
+        <button type="button" id="closeMachineryDialog" class="dialog-close" aria-label="Close">×</button>
+        <div id="dialogMachineDetails"></div>
+        <div id="bookingAvailabilityNotice" class="booking-dialog-notice" role="status" hidden></div>
+        <div class="booking-dialog-fields">
+            <label>Booking date<input type="date" id="bookingDate" name="booking_date" required></label>
+            <label>Start time<input type="time" id="bookingStartTime" name="start_time" required></label>
+            <label>End time<input type="time" id="bookingEndTime" name="end_time" required></label>
+        </div>
+        <section class="booking-review" aria-labelledby="bookingReviewTitle">
+            <h3 id="bookingReviewTitle">Review booking summary</h3>
+            <p id="bookingSummary">Choose a booking date and time to review this request.</p>
+        </section>
+        <div class="booking-estimate"><span>Estimated rental total</span><strong id="bookingEstimate">—</strong><small>Estimate only. Minimum rental periods, transport, and other fees are not configured.</small></div>
+        <label class="booking-cancellation-policy"><input type="checkbox" id="confirmBookingSummary" required><span>I reviewed the booking summary. I may cancel within 6 hours of submitting this booking request; the server enforces this limit using the recorded booking time.</span></label>
+        <p id="bookingMessage" class="form-feedback" role="alert" aria-live="polite"></p>
+        <button type="submit" id="bookingSubmit" class="btn btn-accent booking-submit">Confirm Booking</button>
+    </form>
+</dialog>
+
+<footer><div class="footer-bottom" style="margin: 0 auto; text-align: center;"><div>&copy; 2026 AgriMachConnect. Real listings from local machinery owners.</div></div></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="api.js"></script>
+<script src="farmer.js"></script>
+<script>
+    document.getElementById("mobileToggle").addEventListener("click", () => document.getElementById("mainNav").classList.toggle("show"));
+    document.getElementById("logoutLink").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+    });
+</script>
+</body>
+</html>

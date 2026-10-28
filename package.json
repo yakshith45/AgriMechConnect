@@ -1,0 +1,11 @@
+{
+  "name": "agri-mech-connect-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix \"Agri Mech Connect/backend\" start",
+    "dev": "npm --prefix \"Agri Mech Connect/backend\" run dev",
+    "test": "npm --prefix \"Agri Mech Connect/backend\" test",
+    "health": "node -e \"fetch('http://127.0.0.1:5000/api/health').then(r=>r.json()).then(d=>console.log(JSON.stringify(d,null,2))).catch(e=>console.error('Backend offline:',e.message))\""
+  }
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Confirm your AgriMachConnect role and service location.">
+    <title>Select Your Role &amp; Location | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';">
+</head>
+<body class="auth-page role-location-page">
+    <header>
+        <a href="index.html" class="logo-wrap site-brand" aria-label="AgriMachConnect Home">
+            <img src="images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect leaf and gear logo" class="logo-svg">
+            <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+        </a>
+        <nav aria-label="Main navigation">
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="login.html" id="logoutLink">Log out</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="role-location-main">
+        <section class="role-location-heading">
+            <span class="role-location-kicker"><span aria-hidden="true">✦</span> YOUR AGRICULTURAL MARKETPLACE</span>
+            <h1>Select Your Role <span>&amp; Location</span></h1>
+            <p>Choose how you want to use AgriMachConnect, then set your location to get started.</p>
+        </section>
+
+        <form id="roleLocationForm" class="role-location-card">
+            <div class="account-role-display-panel" style="margin-bottom: 24px; padding: 18px; border-radius: 12px; background: rgba(11, 61, 37, 0.05); border: 1px solid rgba(11, 61, 37, 0.15); display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <span id="roleBadgeIcon" style="font-size: 2rem;" aria-hidden="true">🌾</span>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <strong id="roleBadgeTitle" style="font-size: 1.15rem; color: var(--ink-900);">Farmer Account</strong>
+                            <span style="display: inline-block; padding: 2px 8px; border-radius: 999px; background: #e6f4ea; color: #137333; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Permanent Role</span>
+                        </div>
+                        <small id="roleBadgeDescription" style="color: var(--ink-600); display: block; margin-top: 2px;">Your role was fixed at registration and cannot be modified.</small>
+                    </div>
+                </div>
+            </div>
+
+            <section class="location-picker" aria-labelledby="locationPickerTitle">
+                <div class="location-picker-heading">
+                    <div class="location-picker-title">
+                        <span class="workflow-step">2</span>
+                        <div>
+                            <h2 id="locationPickerTitle">Set your location</h2>
+                            <p>Choose a village and fine-tune your pin within 25 km of Sullia.</p>
+                        </div>
+                    </div>
+                    <label class="map-provider-control" for="mapProvider">
+                        Map style
+                        <select id="mapProvider" aria-label="Map provider">
+                            <option value="osm">OpenStreetMap</option>
+                            <option value="google" disabled>Google Maps (not configured)</option>
+                        </select>
+                    </label>
+                </div>
+
+                <label class="visually-hidden" for="locationSearch">Search villages and addresses</label>
+                <div class="location-search-row">
+                    <span class="location-search-icon" aria-hidden="true">⌕</span>
+                    <input id="locationSearch" type="search" autocomplete="off" placeholder="Search village or gram panchayat" aria-describedby="locationSearchHelp">
+                    <button type="button" class="btn btn-outline location-current-button" id="useCurrentLocation"><span aria-hidden="true">◎</span> Use My Current Location</button>
+                </div>
+                <p id="locationSearchHelp" class="location-search-help">Search real village and gram panchayat names around Sullia. Results depend on OpenStreetMap data coverage.</p>
+                <div id="locationSearchResults" class="location-search-results" role="listbox" aria-label="Location search results" hidden></div>
+
+                <div class="location-map-frame">
+                    <div id="locationMap" class="location-map" role="application" aria-label="Location map"></div>
+                    <div class="map-area-badge"><span aria-hidden="true">◉</span> Sullia service area <strong>25 km</strong></div>
+                </div>
+                <p id="mapMessage" class="map-message" role="status" aria-live="polite" hidden></p>
+                <p class="map-attribution" id="mapAttribution">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. Search by <a href="https://photon.komoot.io/" target="_blank" rel="noreferrer">Photon</a>.</p>
+
+                <div class="selected-location-panel" aria-live="polite">
+                    <span class="selected-location-icon" aria-hidden="true">⌖</span>
+                    <div class="selected-location-summary">
+                        <small>SELECTED LOCATION</small>
+                        <strong id="selectedLocationName">Sullia, Dakshina Kannada, Karnataka, India</strong>
+                        <span id="radiusStatus" class="radius-status"></span>
+                    </div>
+                    <div class="selected-coordinates">
+                        <span><small>LATITUDE</small><output id="selectedLatitude">12.561000</output></span>
+                        <span><small>LONGITUDE</small><output id="selectedLongitude">75.387000</output></span>
+                    </div>
+                </div>
+            </section>
+
+            <p id="roleLocationMessage" class="form-feedback role-location-feedback" role="alert" aria-live="assertive"></p>
+            <button id="confirmRoleLocation" type="submit" class="btn btn-accent role-location-submit">Confirm Location &amp; Continue</button>
+            <p class="location-privacy-note"><span aria-hidden="true">🔒</span> Your location is only saved after you confirm.</p>
+        </form>
+    </main>
+
+    <footer class="auth-footer">
+        <div class="footer-bottom">
+            <a href="index.html" class="site-brand footer-brand" aria-label="AgriMachConnect home">
+                <img src="images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect leaf and gear logo">
+                <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+            </a>
+            <div>&copy; 2026 AgriMachConnect. All rights reserved.</div>
+            <span>Location services powered by OpenStreetMap</span>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map-config.js"></script>
+    <script src="api.js"></script>
+    <script src="select-role-location.js"></script>
+</body>
+</html>

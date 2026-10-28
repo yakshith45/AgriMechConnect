@@ -1,0 +1,927 @@
+.nearby-marketplace-page {
+    background: #f7fcf7;
+    color: #064e3b;
+}
+
+.market-search-field > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #24563f;
+}
+
+.nearby-marketplace {
+    width: min(1240px, calc(100% - 32px));
+    margin: 34px auto 72px;
+}
+
+.market-search-field input:focus,
+.market-search-field select:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.13);
+    outline: none;
+}
+
+.nearby-hero,
+.marketplace-filters,
+.market-results-section,
+.farmer-bookings-section {
+    margin-bottom: 24px;
+    padding: clamp(20px, 3vw, 34px);
+    border: 1px solid #e3eadf;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 12px 34px rgb(20 55 32 / 7%);
+}
+
+.market-button-icon {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.nearby-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    color: #fff;
+    min-height: 250px;
+    background:
+        radial-gradient(circle at 84% 20%, rgba(250, 204, 21, 0.18), transparent 22rem),
+        linear-gradient(120deg, #064e3b, #087847 70%, #16a34a);
+    box-shadow: 0 18px 42px rgba(6, 78, 59, 0.16);
+}
+
+.nearby-hero h1 {
+    max-width: 720px;
+    margin: 8px 0 10px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.12;
+}
+
+.nearby-hero p {
+    max-width: 620px;
+    margin: 0;
+    color: #e0f0e1;
+}
+
+.nearby-eyebrow,
+.farmer-location-chip small {
+    display: block;
+    color: #f3cc65;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.farmer-location-chip {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    min-width: min(100%, 285px);
+    padding: 14px;
+    border: 1px solid rgb(255 255 255 / 22%);
+    border-radius: 15px;
+    background: rgb(255 255 255 / 10%);
+}
+
+.farmer-location-chip > span:first-child {
+    color: #f3cc65;
+}
+
+.market-icon {
+    width: 25px;
+    height: 25px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.market-icon-gold {
+    width: 27px;
+    height: 27px;
+}
+
+.farmer-location-chip strong {
+    display: block;
+    margin-top: 5px;
+    overflow-wrap: anywhere;
+}
+
+.farmer-location-chip a,
+.market-text-link {
+    color: #f3cc65;
+    font-weight: 700;
+}
+
+.filter-section-heading,
+.market-results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-section-heading > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-section-heading strong,
+.market-results-heading h2,
+.farmer-bookings-section h2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.market-heading-icon {
+    width: 23px;
+    height: 23px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: #16a34a;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.market-field-icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: #168548;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    vertical-align: -4px;
+}
+
+.market-step {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 50%;
+    color: #fff;
+    background: #087847;
+    font-weight: 800;
+}
+
+.filter-note {
+    color: #637268;
+    font-size: .85rem;
+}
+
+.radius-filter,
+.market-view-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 14px;
+}
+
+.radius-button,
+.market-view-toggle button {
+    padding: 10px 16px;
+    border: 1px solid #cfdacf;
+    border-radius: 999px;
+    color: #234532;
+    background: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.radius-button.active,
+.market-view-toggle button.active {
+    border-color: #087847;
+    color: #fff;
+    background: #087847;
+}
+
+.category-heading {
+    margin-top: 28px;
+}
+
+.market-category-reset {
+    margin-top: 12px;
+    padding: 6px 12px;
+    border: 1px solid #d2a43a;
+    border-radius: 999px;
+    color: #234532;
+    background: #fffdf6;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.market-category-reset:hover,
+.market-category-reset[aria-pressed="true"] {
+    color: #fff;
+    background: #087847;
+    border-color: #087847;
+}
+
+.market-category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+    align-items: stretch;
+}
+
+.market-category-card {
+    display: grid;
+    position: relative;
+    min-width: 0;
+    min-height: 172px;
+    grid-template-rows: 1fr auto;
+    align-content: stretch;
+    justify-items: stretch;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid #dce9dc;
+    border-radius: 12px;
+    color: #234532;
+    background: #fbfdf9;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease;
+}
+
+.market-category-card:hover {
+    border-color: #d2a43a;
+    background: #fffdf6;
+    box-shadow: 0 8px 20px rgb(40 68 43 / 12%);
+    transform: translateY(-2px);
+}
+
+.market-category-card:focus-visible {
+    outline: 3px solid #d6a327;
+    outline-offset: 2px;
+}
+
+.market-category-image {
+    display: block;
+    width: 100%;
+    height: 112px;
+    min-height: 0;
+    border-radius: 8px;
+    background: #e8efe2;
+    object-fit: cover;
+    object-position: center;
+}
+
+.market-category-image[hidden] {
+    display: none;
+}
+
+.market-category-placeholder {
+    display: grid;
+    width: 100%;
+    height: 112px;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    color: #47704e;
+    background: linear-gradient(145deg, #f1f5ec, #e4eee0);
+}
+
+.market-category-placeholder[hidden] {
+    display: none;
+}
+
+.market-category-placeholder span {
+    font-size: 1.8rem;
+}
+
+.market-category-placeholder small {
+    padding: 0 6px;
+    font-size: .72rem;
+}
+
+.market-category-placeholder[data-category="tractor"] { color: #805313; background: linear-gradient(145deg, #f5e8c6, #e7d39f); }
+.market-category-placeholder[data-category="harvester"] { color: #785411; background: linear-gradient(145deg, #f6edc8, #e6d68d); }
+.market-category-placeholder[data-category="rotavator"] { color: #3c6847; background: linear-gradient(145deg, #e6f1df, #c9dfbd); }
+.market-category-placeholder[data-category="adike-sprayer"] { color: #1c6574; background: linear-gradient(145deg, #dff2ed, #b8ddd7); }
+.market-category-placeholder[data-category="power-tiller"] { color: #3c6847; background: linear-gradient(145deg, #e6f1df, #c9dfbd); }
+.market-category-placeholder[data-category="drone"] { color: #3e5f70; background: linear-gradient(145deg, #e1eef0, #bfd4d6); }
+.market-category-placeholder[data-category="trailer"] { color: #775334; background: linear-gradient(145deg, #f1e5d7, #ddc4a8); }
+
+.market-category-card strong {
+    font-size: .9rem;
+    line-height: 1.25;
+    align-self: center;
+}
+
+.market-category-card small {
+    color: #66786a;
+}
+
+.market-category-card.active {
+    border-color: #16a34a;
+    background: #dcfce7;
+    box-shadow: inset 0 0 0 1px #16a34a, 0 8px 20px rgba(22, 163, 74, 0.12);
+}
+
+.market-category-card.active::after {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border-radius: 50%;
+    background: #16a34a;
+    color: #fff;
+    content: "✓";
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.market-category-card.active:hover {
+    border-color: #d2a43a;
+    box-shadow: inset 0 0 0 1px #16804a, 0 8px 20px rgb(40 68 43 / 12%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .market-category-card { transition: none; }
+}
+
+.market-extra-filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.market-search-field {
+    display: grid;
+    gap: 6px;
+    color: #344b3b;
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+.market-search-field input {
+    width: 100%;
+    min-height: 43px;
+    padding: 9px 11px;
+    border: 1px solid #cad6c9;
+    border-radius: 10px;
+    color: #203628;
+    background: #fff;
+}
+
+.market-search-field select {
+    width: 100%;
+    min-height: 43px;
+    padding: 9px 11px;
+    border: 1px solid #cad6c9;
+    border-radius: 10px;
+    color: #203628;
+    background: #fff;
+}
+
+.market-filter-message,
+.market-error {
+    margin: 12px 0 0;
+    color: #a13425;
+}
+
+.market-error {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fff0ed;
+}
+
+.market-results-heading {
+    margin-bottom: 18px;
+}
+
+.market-results-heading h2,
+.farmer-bookings-section h2 {
+    margin: 0;
+    color: #183b27;
+}
+
+.market-results-heading p {
+    margin: 5px 0 0;
+    color: #607064;
+}
+
+.market-view-toggle {
+    margin: 0;
+}
+
+.market-machinery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.nearby-machinery-card {
+    overflow: hidden;
+    border: 1px solid #e1e9df;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(20 55 32 / 6%);
+}
+
+.nearby-machinery-photo-wrap {
+    position: relative;
+    height: 190px;
+    margin: 10px 10px 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #eef3ec;
+}
+
+.nearby-machinery-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.machinery-photo-placeholder {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    color: #47704e;
+    background: linear-gradient(145deg, #f1f5ec, #e4eee0);
+    text-align: center;
+}
+
+.machinery-photo-placeholder[data-category="tractor"] { color: #805313; background: linear-gradient(145deg, #f5e8c6, #e7d39f); }
+.machinery-photo-placeholder[data-category="harvester"] { color: #785411; background: linear-gradient(145deg, #f6edc8, #e6d68d); }
+.machinery-photo-placeholder[data-category="rotavator"] { color: #3c6847; background: linear-gradient(145deg, #e6f1df, #c9dfbd); }
+.machinery-photo-placeholder[data-category="power-tiller"] { color: #3c6847; background: linear-gradient(145deg, #e6f1df, #c9dfbd); }
+.machinery-photo-placeholder[data-category="drone"] { color: #3e5f70; background: linear-gradient(145deg, #e1eef0, #bfd4d6); }
+.machinery-photo-placeholder[data-category="trailer"] { color: #775334; background: linear-gradient(145deg, #f1e5d7, #ddc4a8); }
+.machinery-photo-placeholder[data-category="adike-sprayer"] { color: #386b43; background: linear-gradient(145deg, #e4f0df, #c4ddbd); }
+.machinery-photo-placeholder[data-category="legacy"] { color: #4f6844; background: linear-gradient(145deg, #e8eee0, #cedabd); }
+
+.machinery-photo-placeholder span {
+    font-size: 2.3rem;
+}
+
+.machinery-photo-placeholder small {
+    font-size: .78rem;
+}
+
+.machinery-photo-placeholder strong { font-size: .92rem; }
+
+.nearby-category-badge,
+.nearby-availability-badge {
+    position: absolute;
+    top: 10px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: #fff;
+    color: #20482e;
+    font-size: .75rem;
+    font-weight: 800;
+}
+
+.nearby-category-badge {
+    left: 10px;
+}
+
+.nearby-availability-badge {
+    right: 10px;
+    color: #126640;
+    background: #e8f6e9;
+}
+
+.nearby-machinery-content {
+    padding: 16px;
+}
+
+.nearby-machinery-content h3 {
+    margin: 0;
+    color: #173b25;
+    font-size: 1.18rem;
+}
+
+.nearby-machinery-model {
+    margin: 5px 0 11px;
+    color: #6b776d;
+    font-size: .88rem;
+}
+
+.nearby-machinery-description {
+    margin: 12px 0 0;
+    color: #526456;
+    font-size: .9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.nearby-machinery-price {
+    color: #1d6138;
+}
+
+.nearby-machinery-price strong {
+    font-size: 1.35rem;
+}
+
+.nearby-machinery-facts {
+    display: grid;
+    gap: 7px;
+    margin: 14px 0;
+}
+
+.machinery-fact {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 8px;
+    font-size: .84rem;
+}
+
+.machinery-fact span {
+    color: #68776b;
+}
+
+.machinery-fact strong {
+    color: #2e4935;
+    overflow-wrap: anywhere;
+}
+
+.nearby-machinery-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.nearby-machinery-actions > button {
+    flex: 1;
+    justify-content: center;
+}
+
+.nearby-owner-contact {
+    display: inline-block;
+    margin-top: 12px;
+    color: #126640;
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.market-empty-state {
+    grid-column: 1 / -1;
+    padding: 40px 20px;
+    border: 1px dashed #bdcdbb;
+    border-radius: 15px;
+    color: #49634f;
+    background: #f8fbf6;
+    text-align: center;
+}
+
+.market-empty-state > span {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
+    place-items: center;
+    border-radius: 18px;
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.market-empty-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.market-map-section[hidden],
+.market-machinery-grid[hidden] {
+    display: none;
+}
+
+.market-map {
+    height: min(60vh, 560px);
+    min-height: 340px;
+    border-radius: 15px;
+    background: #e7eee4;
+}
+
+.market-map-attribution {
+    color: #607064;
+    font-size: .75rem;
+}
+
+.machinery-map-marker-shell {
+    border: 0;
+    background: transparent;
+}
+
+.machinery-map-marker {
+    display: grid;
+    width: 34px;
+    height: 38px;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 50% 50% 50% 4px;
+    color: #fff;
+    background: #087847;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+    font-size: 17px;
+    transform: rotate(-45deg);
+}
+
+.machinery-map-marker::first-letter {
+    transform: rotate(45deg);
+}
+
+.machinery-map-popup {
+    display: grid;
+    gap: 4px;
+}
+
+.machinery-map-popup strong {
+    color: #17422a;
+}
+
+.map-popup-details {
+    width: max-content;
+    margin-top: 4px;
+    border: 0;
+    color: #087847;
+    background: transparent;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.machinery-dialog {
+    width: min(94vw, 620px);
+    max-height: 90vh;
+    padding: 0;
+    border: 0;
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgb(0 0 0 / 30%);
+}
+
+.machinery-dialog::backdrop {
+    background: rgb(10 30 18 / 62%);
+}
+
+.machinery-dialog-card {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    padding: 26px;
+}
+
+.dialog-close {
+    position: absolute;
+    top: 10px;
+    right: 13px;
+    border: 0;
+    color: #314537;
+    background: transparent;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.booking-dialog-notice {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.booking-dialog-notice[hidden] {
+    display: none;
+}
+
+.booking-dialog-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.booking-dialog-fields[hidden],
+.booking-review[hidden],
+.booking-estimate[hidden],
+.booking-cancellation-policy[hidden] {
+    display: none;
+}
+
+.booking-dialog-fields label {
+    display: grid;
+    gap: 5px;
+    color: #354a3a;
+    font-size: .85rem;
+}
+
+.booking-dialog-fields input {
+    min-height: 42px;
+    padding: 7px;
+    border: 1px solid #cad6c9;
+    border-radius: 9px;
+}
+
+.booking-estimate {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #eff7ed;
+}
+
+.booking-estimate strong {
+    color: #17643b;
+    font-size: 1.25rem;
+}
+
+.booking-estimate small {
+    flex-basis: 100%;
+    color: #607064;
+}
+
+.booking-review {
+    padding: 12px 14px;
+    border-left: 3px solid #d6a327;
+    background: #fffaf0;
+}
+
+.booking-review h3 { margin: 0 0 5px; color: #284b32; font-size: 1rem; }
+.booking-review p { margin: 0; color: #4e6151; line-height: 1.5; }
+.cancellation-countdown { color: #745516; font-size: .88rem; font-weight: 700; }
+
+.booking-cancellation-policy {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: #526456;
+    font-size: .84rem;
+    line-height: 1.45;
+}
+
+.booking-cancellation-policy input {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    accent-color: #087847;
+}
+
+.farmer-booking-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.farmer-booking-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #dce9dc;
+    border-radius: 12px;
+    background: #fff;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.farmer-booking-item:hover {
+    border-color: #9bd3a6;
+    box-shadow: 0 10px 24px rgba(6, 78, 59, 0.1);
+    transform: translateY(-2px);
+}
+
+.farmer-booking-item > div {
+    display: grid;
+    gap: 4px;
+}
+
+.farmer-booking-item > div span,
+.farmer-booking-empty {
+    color: #607064;
+}
+
+.farmer-booking-status {
+    color: #946110;
+    font-size: .84rem;
+    font-weight: 800;
+}
+
+.farmer-booking-status.status-accepted {
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #166534;
+    background: #dcfce7;
+}
+
+.farmer-booking-status.status-rejected,
+.farmer-booking-status.status-cancelled {
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #b42318;
+    background: #fee2e2;
+}
+
+.farmer-booking-status.status-pending {
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.booking-cancel-button {
+    border: 0;
+    color: #a13425;
+    background: transparent;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .market-machinery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .market-category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .nearby-marketplace {
+        width: min(100% - 24px, 560px);
+        margin-top: 16px;
+    }
+
+    .nearby-hero {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .marketplace-filters,
+    .market-results-section,
+    .farmer-bookings-section {
+        padding: 18px;
+    }
+
+    .market-extra-filters,
+    .market-machinery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .market-category-card { min-height: 156px; }
+    .market-category-image,
+    .market-category-placeholder { height: 96px; }
+
+    .filter-section-heading,
+    .market-results-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .filter-note {
+        margin-left: 38px;
+    }
+
+    .market-view-toggle {
+        width: 100%;
+    }
+
+    .market-view-toggle button {
+        flex: 1;
+    }
+
+    .booking-dialog-fields {
+        grid-template-columns: 1fr;
+    }
+}
