@@ -72,11 +72,22 @@ function isLocalDatabaseHost(host) {
     );
 }
 
+function databaseHostFromEnvironment(environment) {
+    if (typeof environment.DB_HOST === "string" && environment.DB_HOST.trim()) {
+        return environment.DB_HOST.trim();
+    }
+    try {
+        return new URL(environment.DATABASE_URL).hostname;
+    } catch {
+        return "";
+    }
+}
+
 async function provisionAdminFromEnvironment(database, environment) {
     if (environment.NODE_ENV !== "development") {
         throw new Error("Environment-based Admin provisioning is allowed only when NODE_ENV=development.");
     }
-    if (!isLocalDatabaseHost(environment.DB_HOST)) {
+    if (!isLocalDatabaseHost(databaseHostFromEnvironment(environment))) {
         throw new Error("Environment-based Admin provisioning requires a local PostgreSQL host.");
     }
     const name = environment.ADMIN_BOOTSTRAP_NAME;
@@ -128,6 +139,7 @@ async function mainFromEnvironment() {
     require("dotenv").config({ path: path.join(__dirname, "..", "..", ".env") });
     const credentials = {
         NODE_ENV: process.env.NODE_ENV,
+        DATABASE_URL: process.env.DATABASE_URL,
         DB_HOST: process.env.DB_HOST,
         ADMIN_BOOTSTRAP_NAME: process.env.ADMIN_BOOTSTRAP_NAME,
         ADMIN_BOOTSTRAP_EMAIL: process.env.ADMIN_BOOTSTRAP_EMAIL,
@@ -154,4 +166,4 @@ if (require.main === module) {
     main();
 }
 
-module.exports = { provisionAdmin, provisionAdminFromEnvironment, isLocalDatabaseHost, mainFromEnvironment };
+module.exports = { provisionAdmin, provisionAdminFromEnvironment, isLocalDatabaseHost, databaseHostFromEnvironment, mainFromEnvironment };

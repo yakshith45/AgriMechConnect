@@ -8,7 +8,8 @@ This document describes the current code layout after consolidating the applicat
 - `backend/` contains the Node.js/Express API. Route handlers, middleware, and configuration are separated; admin utilities, database migration runners, and tests have their own folders.
 - `database/migrations/` contains the SQL change scripts used by the current PostgreSQL backend.
 - `database/reference/` contains historical schema snapshots. These are retained for reference and should not be run as upgrades.
-- `database/supabase/schema.sql`, `docs/SUPABASE_SETUP.md`, and `docs/CLOUDINARY_SETUP.md` are future integration notes. The current API still uses PostgreSQL through `pg`; no Cloudinary upload integration is present.
+- `database/supabase/schema.sql` is the canonical schema for the current Supabase PostgreSQL setup. The API still uses PostgreSQL through `pg`, with its connection string supplied by `DATABASE_URL`.
+- Machinery photos selected by owners are uploaded by the authenticated Express API to Cloudinary. Only the resulting hosted URL and public ID are stored in Supabase. The logos and static design assets under `frontend/assets/images/` remain in source control.
 - `docs/` contains setup, workflow, and architecture documentation.
 
 ## Frontend page map

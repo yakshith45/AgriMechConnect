@@ -1007,21 +1007,21 @@ async function deleteListing(listing) {
     }
 }
 
-async function imageDataUrl() {
-    const file = imageInput.files?.[0];
-    if (!file) return null;
+async function uploadMachineryPhoto(file) {
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 3 * 1024 * 1024) {
         throw new Error("Select a PNG, JPEG, or WebP image no larger than 3 MB.");
     }
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-            if (typeof reader.result !== "string") reject(new Error("The selected image could not be read."));
-            else resolve(reader.result);
-        }, { once: true });
-        reader.addEventListener("error", () => reject(new Error("The selected image could not be read.")), { once: true });
-        reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append("photo", file);
+    const result = await AgriMachApi.request("/machinery-owner/images/upload", {
+        method: "POST",
+        headers: authHeaders(),
+        body: formData
     });
+    if (!result?.image?.image_url || !result?.image?.cloudinary_public_id) {
+        throw new Error("Cloudinary returned an invalid machinery photo result.");
+    }
+    return result.image;
 }
 
 if (machineryForm) {
@@ -1072,6 +1072,7 @@ if (machineryForm) {
         setSubmitButtonLabel(editingListingId ? "Saving Changes…" : "Publishing Listing…", true);
         messageElement.textContent = "";
         let serverRequestStarted = false;
+        let newlyUploadedImage = null;
 
         try {
             const latitude = Number(document.getElementById("latitude").value);
@@ -1124,8 +1125,12 @@ if (machineryForm) {
                 availability_start_time: formatAvailabilityTime(document.getElementById("availabilityStartTime").value) || null,
                 availability_end_time: formatAvailabilityTime(document.getElementById("availabilityEndTime").value) || null
             };
-            const photo = await imageDataUrl();
-            if (photo) payload.image_url = photo;
+            const photo = imageInput.files?.[0];
+            if (photo) {
+                newlyUploadedImage = await uploadMachineryPhoto(photo);
+                payload.image_url = newlyUploadedImage.image_url;
+                payload.cloudinary_public_id = newlyUploadedImage.cloudinary_public_id;
+            }
             serverRequestStarted = true;
             const result = await AgriMachApi.request(
                 `/machinery-owner${editingListingId ? `/${editingListingId}` : ""}`,
@@ -1135,6 +1140,7 @@ if (machineryForm) {
                     body: JSON.stringify(payload)
                 }
             );
+            newlyUploadedImage = null;
             setMessage(messageElement, result.message || "Machinery listing saved.");
             showOwnerFormToast(result.message || "Machinery listing saved.");
             resetListingForm();
@@ -1143,6 +1149,13 @@ if (machineryForm) {
             console.error("Machinery listing save failed:", error);
             setMessage(messageElement, error.message || "Could not save the machinery listing.", true);
             if (serverRequestStarted) showOwnerFormToast(error.message || "The server could not save this listing.", true);
+            if (newlyUploadedImage && error.status && error.status < 500) {
+                void AgriMachApi.request("/machinery-owner/images/cleanup", {
+                    method: "POST",
+                    headers: authHeaders(true),
+                    body: JSON.stringify({ cloudinary_public_id: newlyUploadedImage.cloudinary_public_id })
+                }).catch(cleanupError => console.error("Unused Cloudinary photo cleanup failed:", cleanupError));
+            }
         } finally {
             submitButton.disabled = false;
             setSubmitButtonLabel(editingListingId ? "Save Listing Changes" : "Publish Machinery Listing");

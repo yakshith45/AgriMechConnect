@@ -9,6 +9,9 @@ node_modules/
 !.env.example
 !**/.env.example
 
+# Local database trust certificates (download separately from Supabase).
+/backend/ssl/
+
 # Logs
 *.log
 npm-debug.log*

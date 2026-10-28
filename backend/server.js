@@ -116,7 +116,7 @@ async function healthCheck(req, res) {
             uptimeSeconds: Math.round(process.uptime()),
             timestamp: new Date().toISOString(),
             database: { status: "unavailable" },
-            message: "PostgreSQL is unavailable. Check that it is running and that DB_* settings in backend/.env are correct."
+            message: "Supabase PostgreSQL is unavailable. Verify DATABASE_URL and database access in backend/.env."
         });
     }
 }
@@ -210,10 +210,10 @@ async function startServer() {
         console.log(`API Health: http://127.0.0.1:${PORT}/api/health`);
         console.log("========================================================\n");
         pool.query("SELECT 1")
-            .then(() => console.log("PostgreSQL connected successfully"))
+            .then(() => console.log("Supabase PostgreSQL connected successfully"))
             .catch(error => {
                 console.error(
-                    "PostgreSQL is unavailable. Start the database and verify DB_* settings in backend/.env:",
+                    "Supabase PostgreSQL is unavailable. Verify DATABASE_URL and database access in backend/.env:",
                     error.message
                 );
             });

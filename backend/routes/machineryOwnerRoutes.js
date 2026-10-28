@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const { deleteMachineryImage, uploadMachineryImage } = require("../config/cloudinary");
 const pool = require("../config/db");
 const {
     isWithinLocationRadius,
@@ -11,7 +13,12 @@ const {
 
 const router = express.Router();
 const PRICE_UNITS = ["hour", "day"];
-const MAX_IMAGE_DATA_URL_LENGTH = 4_200_000;
+const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
+const allowedImageTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
+const imageUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: MAX_IMAGE_BYTES, files: 1, fields: 0 }
+});
 const MACHINERY_CATEGORIES = [
     "Tractor",
     "Harvester",
@@ -23,6 +30,55 @@ const MACHINERY_CATEGORIES = [
 ];
 
 router.use(authenticateToken, requireRole("owner"));
+
+function imageFolderForOwner(ownerId) {
+    const folder = (process.env.CLOUDINARY_FOLDER || "agrimech/machinery").replace(/^\/+|\/+$/g, "");
+    return `${folder}/owner-${ownerId}/`;
+}
+
+function parseImageUpload(req, res, next) {
+    imageUpload.single("photo")(req, res, error => {
+        if (!error) return next();
+        if (error.code === "LIMIT_FILE_SIZE") {
+            return res.status(413).json({ message: "Machinery photos must be 3 MB or smaller." });
+        }
+        return res.status(400).json({ message: "Choose one PNG, JPEG, or WebP photo." });
+    });
+}
+
+router.post("/images/upload", parseImageUpload, async (req, res) => {
+    if (!req.file) return res.status(400).json({ message: "Choose a machinery photo to upload." });
+    if (!allowedImageTypes.has(req.file.mimetype)) {
+        return res.status(400).json({ message: "Choose a PNG, JPEG, or WebP image." });
+    }
+    try {
+        const image = await uploadMachineryImage(req.file.buffer, req.user.id);
+        res.status(201).json({ image });
+    } catch (error) {
+        console.error("Cloudinary machinery image upload failed:", error.message);
+        res.status(error.code === "CLOUDINARY_NOT_CONFIGURED" ? 503 : 502).json({
+            message: error.code === "CLOUDINARY_NOT_CONFIGURED"
+                ? "Image hosting is not configured. Add the Cloudinary credentials to backend/.env."
+                : "The machinery photo could not be uploaded. Check Cloudinary configuration and try again."
+        });
+    }
+});
+
+router.post("/images/cleanup", async (req, res) => {
+    const publicId = typeof req.body?.cloudinary_public_id === "string"
+        ? req.body.cloudinary_public_id
+        : "";
+    if (!publicId || !publicId.startsWith(imageFolderForOwner(req.user.id))) {
+        return res.status(400).json({ message: "Invalid uploaded image reference." });
+    }
+    try {
+        await deleteMachineryImage(publicId);
+        res.status(204).end();
+    } catch (error) {
+        console.error("Unused Cloudinary machinery image cleanup failed:", error.message);
+        res.status(502).json({ message: "The unused image could not be removed from Cloudinary." });
+    }
+});
 
 function optionalText(value, field, maxLength) {
     if (value == null) return { value: null };
@@ -73,11 +129,22 @@ function normalizeAvailabilityTime(value) {
     return match ? `${match[1]}:${match[2]}` : null;
 }
 
-function validImageUrl(value) {
-    if (value == null || value === "") return true;
-    if (typeof value !== "string" || value.length > MAX_IMAGE_DATA_URL_LENGTH) return false;
-    if (/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value)) return true;
-    return /^(?:https?:\/\/|\/|images\/)[^\s]+$/i.test(value);
+function validCloudinaryImage(imageUrl, publicId, ownerId) {
+    if (typeof imageUrl !== "string" || typeof publicId !== "string") return false;
+    if (imageUrl.length > 2048 || publicId.length > 512) return false;
+    let parsedUrl;
+    try {
+        parsedUrl = new URL(imageUrl);
+    } catch {
+        return false;
+    }
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim();
+    const folder = (process.env.CLOUDINARY_FOLDER || "agrimech/machinery").replace(/^\/+|\/+$/g, "");
+    return Boolean(cloudName) &&
+        parsedUrl.protocol === "https:" &&
+        parsedUrl.hostname === "res.cloudinary.com" &&
+        parsedUrl.pathname.startsWith(`/${cloudName}/image/upload/`) &&
+        publicId.startsWith(`${folder}/owner-${ownerId}/`);
 }
 
 function validCoordinates(latitude, longitude) {
@@ -94,7 +161,7 @@ function validCoordinates(latitude, longitude) {
     return valid(latitude, -90, 90) && valid(longitude, -180, 180);
 }
 
-function validateListing(body, { partial = false } = {}) {
+function validateListing(body, { partial = false, ownerId } = {}) {
     const fields = {};
     const required = ["name", "type", "price", "location", "latitude", "longitude"];
     for (const key of required) {
@@ -143,11 +210,16 @@ function validateListing(body, { partial = false } = {}) {
         if (parsed.error) return parsed;
         fields.specifications = parsed.value;
     }
-    if (body.image_url !== undefined) {
-        if (!validImageUrl(body.image_url)) {
-            return { error: "Upload a PNG, JPEG, or WebP photo smaller than 3 MB." };
+    if (body.image_url !== undefined || body.cloudinary_public_id !== undefined) {
+        if (body.image_url == null && body.cloudinary_public_id == null && partial) {
+            fields.image_url = null;
+            fields.cloudinary_public_id = null;
+        } else if (!validCloudinaryImage(body.image_url, body.cloudinary_public_id, ownerId)) {
+            return { error: "Upload a PNG, JPEG, or WebP image using the machinery photo uploader." };
+        } else {
+            fields.image_url = body.image_url;
+            fields.cloudinary_public_id = body.cloudinary_public_id;
         }
-        fields.image_url = body.image_url || null;
     }
     if (body.availability !== undefined) {
         if (typeof body.availability !== "boolean") {
@@ -223,7 +295,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const parsed = validateListing(req.body);
+    const parsed = validateListing(req.body, { ownerId: req.user.id });
     if (parsed.error) return res.status(400).json({ message: parsed.error });
     const listing = parsed.fields;
 
@@ -232,9 +304,9 @@ router.post("/", async (req, res) => {
             `INSERT INTO machinery
                 (owner_id, name, type, brand, model, description, price,
                  price_unit, specifications, location, latitude, longitude,
-                 image_url, availability, availability_start_date, availability_end_date,
-                 availability_start_time, availability_end_time)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::JSONB,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+                 image_url, cloudinary_public_id, availability, availability_start_date,
+                 availability_end_date, availability_start_time, availability_end_time)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::JSONB,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
              RETURNING *`,
             [
                 req.user.id,
@@ -250,6 +322,7 @@ router.post("/", async (req, res) => {
                 listing.latitude,
                 listing.longitude,
                 listing.image_url ?? null,
+                listing.cloudinary_public_id ?? null,
                 listing.availability ?? true,
                 listing.availability_start_date,
                 listing.availability_end_date,
@@ -271,7 +344,7 @@ router.put("/:id", async (req, res) => {
     if (!/^\d+$/.test(req.params.id)) {
         return res.status(400).json({ message: "Invalid machinery listing ID." });
     }
-    const parsed = validateListing(req.body, { partial: true });
+    const parsed = validateListing(req.body, { partial: true, ownerId: req.user.id });
     if (parsed.error) return res.status(400).json({ message: parsed.error });
     const listing = parsed.fields;
     if (!Object.keys(listing).length) {
@@ -279,6 +352,14 @@ router.put("/:id", async (req, res) => {
     }
 
     try {
+        const previousImageResult = await pool.query(
+            "SELECT cloudinary_public_id FROM machinery WHERE id = $1 AND owner_id = $2",
+            [req.params.id, req.user.id]
+        );
+        if (!previousImageResult.rows.length) {
+            return res.status(404).json({ message: "Machinery listing not found" });
+        }
+        const previousPublicId = previousImageResult.rows[0].cloudinary_public_id;
         const result = await pool.query(
             `UPDATE machinery
              SET name = COALESCE($1, name),
@@ -293,12 +374,13 @@ router.put("/:id", async (req, res) => {
                  latitude = COALESCE($10, latitude),
                  longitude = COALESCE($11, longitude),
                  image_url = COALESCE($12, image_url),
-                 availability = COALESCE($13, availability),
-                 availability_start_date = CASE WHEN $14 THEN $15::DATE ELSE availability_start_date END,
-                 availability_end_date = CASE WHEN $16 THEN $17::DATE ELSE availability_end_date END,
-                 availability_start_time = CASE WHEN $18 THEN $19::TIME ELSE availability_start_time END,
-                 availability_end_time = CASE WHEN $20 THEN $21::TIME ELSE availability_end_time END
-             WHERE id = $22 AND owner_id = $23
+                 cloudinary_public_id = COALESCE($13, cloudinary_public_id),
+                 availability = COALESCE($14, availability),
+                 availability_start_date = CASE WHEN $15 THEN $16::DATE ELSE availability_start_date END,
+                 availability_end_date = CASE WHEN $17 THEN $18::DATE ELSE availability_end_date END,
+                 availability_start_time = CASE WHEN $19 THEN $20::TIME ELSE availability_start_time END,
+                 availability_end_time = CASE WHEN $21 THEN $22::TIME ELSE availability_end_time END
+             WHERE id = $23 AND owner_id = $24
              RETURNING *`,
             [
                 listing.name ?? null,
@@ -313,6 +395,7 @@ router.put("/:id", async (req, res) => {
                 listing.latitude ?? null,
                 listing.longitude ?? null,
                 listing.image_url ?? null,
+                listing.cloudinary_public_id ?? null,
                 listing.availability ?? null,
                 listing.availability_start_date !== undefined,
                 listing.availability_start_date ?? null,
@@ -328,6 +411,12 @@ router.put("/:id", async (req, res) => {
         );
         if (!result.rows.length) {
             return res.status(404).json({ message: "Machinery listing not found" });
+        }
+        const updatedPublicId = result.rows[0].cloudinary_public_id;
+        if (previousPublicId && previousPublicId !== updatedPublicId) {
+            deleteMachineryImage(previousPublicId).catch(error => {
+                console.error("Previous Cloudinary machinery image cleanup failed:", error.message);
+            });
         }
         res.json({ message: "Machinery updated successfully", machinery: result.rows[0] });
     } catch (error) {

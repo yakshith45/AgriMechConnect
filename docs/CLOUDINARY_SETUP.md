@@ -1,69 +1,24 @@
-# Future Cloudinary Integration Notes for AgriMechConnect
+# Cloudinary image hosting
 
-> **Not active in the current application.** Machinery images currently use frontend assets and listing image URLs. The backend has no Cloudinary SDK or upload endpoint. This document is a proposal for a future integration, not a working setup guide.
+User-uploaded machinery photos are sent from the owner dashboard to the authenticated Express API. The API validates the file, streams it to Cloudinary, and saves only the optimized HTTPS URL and Cloudinary public ID in Supabase. Image bytes are not written to the repository or stored in the database.
 
-This guide walks you through setting up a free [Cloudinary](https://cloudinary.com/) account, creating an upload preset for machinery photos, and connecting the backend & frontend.
+The site still keeps its own logos, icons, and bundled illustration/category assets in `frontend/assets/images/`. These are source-controlled website assets, not owner uploads.
 
----
+## Configure credentials
 
-## 1. Create a Cloudinary Account
+1. Create a Cloudinary account and open the product environment credentials in its Console.
+2. Add the Cloud name, API Key, and API Secret to `backend/.env` as `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`.
+3. Keep the API Secret on the backend only. Uploads use the signed Cloudinary Node SDK; no unsigned browser preset or secret is exposed to the frontend.
+4. Set `CLOUDINARY_FOLDER` if you want a different root folder. Each owner's uploaded images are placed in an owner-specific subfolder.
 
-1. Go to [https://cloudinary.com/](https://cloudinary.com/) and register for a free account.
-2. Once logged in, go to your **Cloudinary Console (Dashboard)**.
-3. Under **Product Environment Credentials**, copy:
-   - **Cloud name**
-   - **API Key**
-   - **API Secret**
+## Upload behavior
 
----
+- The owner form accepts PNG, JPEG, and WebP files up to 3 MB.
+- The API accepts uploads only for authenticated users with the Owner role.
+- Cloudinary returns the HTTPS image URL and public ID. Supabase stores those references in `machinery.image_url` and `machinery.cloudinary_public_id`.
+- Delivery URLs use automatic format and quality transformations.
+- Replacing a listing photo removes the old Cloudinary asset after the database update succeeds. If the listing save is rejected, the browser asks the API to remove the unused new upload.
 
-## 2. Configure an Upload Preset
+## Existing listings
 
-1. In the Cloudinary Console, click the **Settings (gear icon)** at the bottom left.
-2. Navigate to **Upload** -> scroll down to **Upload presets**.
-3. Click **Add upload preset**:
-   - **Name:** `agrimech_machinery`
-   - **Signing Mode:** `Signed` (recommended if uploading via backend) or `Unsigned` (if uploading directly from browser).
-   - **Folder:** `agrimech/machinery`
-   - **Media analysis & AI:** Auto-format (`f_auto`) and Auto-quality (`q_auto`) enabled.
-4. Click **Save**.
-
----
-
-## 3. Proposed backend integration
-
-Install the Cloudinary Node SDK:
-```bash
-npm install cloudinary multer
-```
-
-Setup the Cloudinary client:
-```javascript
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
-});
-
-module.exports = cloudinary;
-```
-
----
-
-## 4. Automatic Image Transformations
-
-When rendering images on cards, use Cloudinary dynamic transformation URLs to deliver crisp, lightweight images without downloading full-resolution camera files:
-
-```html
-<!-- Example 16:10 aspect ratio card thumbnail -->
-<img src="https://res.cloudinary.com/<CLOUD_NAME>/image/upload/c_fill,w_720,h_450,q_auto,f_auto/v1/<PUBLIC_ID>"
-     alt="John Deere Tractor"
-     loading="lazy" />
-```
-
-- `c_fill,w_720,h_450`: Cropped and scaled perfectly to match machinery card dimensions.
-- `q_auto`: Automated smart compression.
-- `f_auto`: Delivers WebP/AVIF depending on user's device.
+For an existing Supabase database, run `npm.cmd --prefix backend run migrate:cloudinary` once to add the public ID column. For listings with old base64 images, run `npm.cmd --prefix backend run migrate:cloudinary-images` after transferring the records into Supabase. The migration reports each listing and does not delete legacy data when an image cannot be uploaded.

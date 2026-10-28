@@ -97,13 +97,13 @@ function isDatabaseUnavailable(error) {
 function databaseFailureMessage(error) {
     if (!error || typeof error !== "object") return null;
     if (["28P01", "3D000"].includes(error.code)) {
-        return "PostgreSQL rejected the configured credentials or database name. Verify DB_* settings in backend/.env.";
+        return "Supabase rejected the configured credentials or database name. Verify DATABASE_URL in backend/.env.";
     }
     if (error.code === "42P01") {
         return "PostgreSQL is missing required application tables. Run the documented database migrations.";
     }
     if (isDatabaseUnavailable(error)) {
-        return "PostgreSQL is unavailable. Start the database and verify DB_* settings in backend/.env.";
+        return "Supabase PostgreSQL is unavailable. Verify DATABASE_URL and database access in backend/.env.";
     }
     return null;
 }
@@ -455,7 +455,7 @@ router.patch("/confirm-location", authenticateSelectionSession, async (req, res)
         console.error("Location confirmation failed:", error.message);
         if (isDatabaseUnavailable(error)) {
             return res.status(503).json({
-                message: "PostgreSQL is unavailable. Start the database and verify DB_* settings in backend/.env."
+                message: "Supabase PostgreSQL is unavailable. Verify DATABASE_URL and database access in backend/.env."
             });
         }
         res.status(500).json({ message: "Could not save your location." });

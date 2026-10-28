@@ -1,24 +1,42 @@
 const { Pool } = require("pg");
+const fs = require("fs");
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
-const requiredVariables = ["DB_USER", "DB_HOST", "DB_NAME", "DB_PASSWORD"];
-const missingVariables = requiredVariables.filter(name => !process.env[name]?.trim());
-if (missingVariables.length) {
-    throw new Error(`Missing required backend environment variables: ${missingVariables.join(", ")}.`);
+const connectionString = process.env.DATABASE_URL?.trim();
+if (!connectionString) {
+    throw new Error("DATABASE_URL must be set in backend/.env to the Supabase PostgreSQL connection string.");
 }
 
-const databasePort = Number(process.env.DB_PORT || 5432);
-if (!Number.isInteger(databasePort) || databasePort < 1 || databasePort > 65535) {
-    throw new Error("DB_PORT in backend/.env must be a valid TCP port from 1 to 65535.");
+let parsedConnection;
+try {
+    parsedConnection = new URL(connectionString);
+} catch {
+    throw new Error("DATABASE_URL in backend/.env must be a valid PostgreSQL connection URL copied from Supabase.");
+}
+if (!["postgres:", "postgresql:"].includes(parsedConnection.protocol)) {
+    throw new Error("DATABASE_URL must use the postgres:// or postgresql:// protocol.");
+}
+if (!parsedConnection.username || !parsedConnection.password || connectionString.includes("[YOUR-PASSWORD]")) {
+    throw new Error("DATABASE_URL must include your Supabase database username and password; replace [YOUR-PASSWORD] with the database password from your project.");
 }
 
+const isLocalDatabase = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(parsedConnection.hostname);
+const sslEnabled = process.env.DATABASE_SSL?.toLowerCase() !== "false" && !isLocalDatabase;
+const sslRejectUnauthorized = process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.toLowerCase() !== "false";
+const caPath = process.env.DATABASE_SSL_CA_PATH?.trim();
+const ssl = sslEnabled ? { rejectUnauthorized: sslRejectUnauthorized } : false;
+if (sslEnabled && sslRejectUnauthorized && caPath) {
+    const resolvedCaPath = path.isAbsolute(caPath) ? caPath : path.resolve(__dirname, "..", caPath);
+    try {
+        ssl.ca = fs.readFileSync(resolvedCaPath, "utf8");
+    } catch {
+        throw new Error(`Could not read the PostgreSQL CA certificate at ${resolvedCaPath}. Check DATABASE_SSL_CA_PATH.`);
+    }
+}
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: databasePort,
+    connectionString,
+    ssl,
     max: 10,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,

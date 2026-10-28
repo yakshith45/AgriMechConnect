@@ -69,7 +69,7 @@ function authenticate(req, res, next, selectionOnly) {
             (typeof error.code === "string" && error.code.startsWith("08"));
         res.status(isDatabaseUnavailable ? 503 : 500).json({
             message: isDatabaseUnavailable
-                ? "PostgreSQL is unavailable. Start the database and verify DB_* settings in backend/.env."
+                ? "Supabase PostgreSQL is unavailable. Verify DATABASE_URL and database access in backend/.env."
                 : "Could not verify your account authorization."
         });
     });

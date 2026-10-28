@@ -1,84 +1,48 @@
-# Future Supabase Migration Notes for AgriMechConnect
+# Supabase PostgreSQL setup
 
-> **Not active in the current application.** The backend currently connects to PostgreSQL using `DB_*` variables and the Node `pg` package. This document is a draft for a possible hosted database migration; do not treat it as the current deployment procedure.
+The API connects to Supabase PostgreSQL through the Node `pg` driver. It keeps the current Express API, password hashing, JWT sessions, and business rules. For this setup, `DATABASE_URL` is the only Supabase credential the backend needs. The URL contains the PostgreSQL database password; a Supabase publishable/anon key or secret/service-role key is not needed because this app does not use the Supabase Data API or Supabase client library. Never put the database password or a secret/service-role key in frontend code.
 
-This guide walks you through setting up a free [Supabase](https://supabase.com/) project, running the database schema, and connecting the backend.
+## Create and prepare the database
 
----
+1. Create a Supabase project and save its database password. Choose a region close to your application users.
+2. Open **SQL Editor** in the Supabase Dashboard.
+3. Open [`database/supabase/schema.sql`](../database/supabase/schema.sql), copy the complete file into a new SQL query, and run it once for a new project. It creates the tables and constraints used by the API, enables row-level security, and adds the tables to Supabase Realtime's publication. The API uses the database owner connection and applies authorization in Express.
+4. In the dashboard, open **Connect** and copy a PostgreSQL URI. A direct connection URL has the form `postgresql://postgres:[YOUR-PASSWORD]@db.<project-ref>.supabase.co:5432/postgres`; replace the placeholder with the database password you set for the project (not an API key). Percent-encode reserved characters in the password. Supabase direct database endpoints require IPv6 unless the project has IPv4 support enabled. If your network is IPv4-only, choose the **Session pooler** in Connect and paste its complete URI as shown; do not construct its hostname or username yourself. See [Supabase's connection options](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
-## 1. Create a Supabase Project
+## Configure the local backend
 
-1. Go to [https://supabase.com/](https://supabase.com/) and click **Sign In** or **Start your project**.
-2. Click **New Project**.
-3. Fill in the project details:
-   - **Name:** `AgriMechConnect`
-   - **Database Password:** Choose a strong password and save it securely.
-   - **Region:** Select `South Asia (Mumbai) [ap-south-1]` (closest for low latency in Karnataka/Sullia).
-   - **Pricing Plan:** Free.
-4. Click **Create new project** and wait 1–2 minutes for provisioning to finish.
+The repository includes a private local template at `backend/.env` and a shareable template at `backend/.env.example`. Fill in:
 
----
+- `DATABASE_URL`: the complete Supabase direct or Session pooler URI, including the database password. Use Session pooler if your network cannot connect to the direct endpoint.
+- `DATABASE_SSL=true`, `DATABASE_SSL_REJECT_UNAUTHORIZED=true`, and `DATABASE_SSL_CA_PATH=ssl/prod-ca-2021.crt`. Save the database CA certificate downloaded from Supabase in `backend/ssl/prod-ca-2021.crt`; this local certificate folder is ignored by Git, so each deployment environment must receive the certificate separately.
+- `JWT_SECRET`: a new random secret. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` and paste the output into the local `.env`.
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`: values from the Cloudinary Console, required for machinery photo uploads.
+- `FRONTEND_ORIGINS`: the exact local and production website origins allowed to call the API.
 
-## 2. Run the Schema in the Supabase SQL Editor
+Keep `backend/.env` private. It is ignored by Git. Never put database credentials, JWT secrets, or the Cloudinary API secret in the frontend.
 
-1. In your Supabase project dashboard, click on the **SQL Editor** tab (the `>_` icon on the left sidebar).
-2. Click **New query**.
-3. Open [database/supabase/schema.sql](../database/supabase/schema.sql).
-4. Copy the entire content and paste it into the Supabase SQL Editor.
-5. Click **Run** (or press `Ctrl+Enter`).
-6. You should see `Success. No rows returned`.
+Install dependencies and start the API from the repository root:
 
-Now click the **Table Editor** tab on the left sidebar: you will see all 8 tables ready:
-- `users`
-- `admin_accounts`
-- `owner_access_requests`
-- `admin_audit_logs`
-- `machinery` (with `cloudinary_public_id` and `image_url`)
-- `bookings`
-- `conversations`
-- `messages`
-
----
-
-## 3. Retrieve Your Connection Settings
-
-1. In Supabase, go to **Project Settings** (the gear icon on the left sidebar) -> **Database**.
-2. Scroll to **Connection string**.
-3. Select **URI** and choose **Transaction Pooler** (recommended for Node.js / serverless, port 6543):
-   ```text
-   postgresql://postgres.[PROJECT_REF]:[YOUR_PASSWORD]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-   ```
-4. Also go to **Project Settings** -> **API** to copy:
-   - **Project URL:** `https://[PROJECT_REF].supabase.co`
-   - **anon / public key:** `eyJhbGciOi...`
-   - **service_role secret:** `eyJhbGciOi...`
-
----
-
-## 4. Configure `backend/.env`
-
-In your backend `.env` file, configure the connection:
-
-```ini
-PORT=5000
-HOST=0.0.0.0
-
-# Option A: Direct PostgreSQL / Supabase Pooler settings
-DB_USER=postgres.[PROJECT_REF]
-DB_HOST=aws-0-ap-south-1.pooler.supabase.com
-DB_NAME=postgres
-DB_PASSWORD=[YOUR_SUPABASE_DB_PASSWORD]
-DB_PORT=6543
-
-# Option B: Or use standard DATABASE_URL
-DATABASE_URL=postgresql://postgres.[PROJECT_REF]:[YOUR_PASSWORD]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-
-# Supabase API (for Realtime & WebSockets)
-SUPABASE_URL=https://[PROJECT_REF].supabase.co
-SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# JWT & Frontend
-JWT_SECRET=your_jwt_secret_key
-FRONTEND_ORIGINS=http://127.0.0.1:5500,http://localhost:5500,http://localhost:3000
+```powershell
+npm.cmd --prefix backend ci
+npm.cmd start
 ```
+
+Start the static frontend separately with its document root set to `frontend/`:
+
+```powershell
+Set-Location .\frontend
+py -m http.server 5501
+```
+
+Open `http://localhost:5501/`. The API health endpoint at `http://localhost:5000/api/health` reports whether it can reach Supabase and whether the required core tables exist.
+
+If startup or the health endpoint reports `ENOTFOUND` for the database host, DNS could not find that hostname; the request has not reached PostgreSQL, so this is not caused by a missing API key or a rejected password. Confirm the project is active and the project reference/host exactly matches the dashboard's **Connect** details. If the direct host still does not resolve on your network, copy the dashboard's Session pooler URI instead. See [Supabase DNS troubleshooting](https://supabase.com/kb/troubleshooting/nxdomain-error-connecting-to-a-supabase-project).
+
+## Existing data and migrations
+
+The schema file creates an empty database. It does not copy records from a previous local PostgreSQL database. If there is production data to preserve, export and import it into Supabase before switching the app to the new URL; validate table and sequence IDs before inviting users. Do not run historical full-schema snapshots under `database/reference/` as migrations.
+
+For changes after the initial schema, SQL migrations live in `database/migrations/`. The matching backend migration commands use `DATABASE_URL` and apply the change to the configured Supabase database. For example, `npm.cmd --prefix backend run migrate:cloudinary` adds the Cloudinary public ID column to an existing database.
+
+If the old database contains owner photos saved as base64 data URLs, first transfer those listing records to Supabase, then run `npm.cmd --prefix backend run migrate:cloudinary-images`. That command uploads those existing images to Cloudinary and replaces the data URL with its hosted URL and public ID. It stops on unsupported or oversized legacy images rather than deleting them.

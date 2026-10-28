@@ -1,9 +1,9 @@
 BEGIN;
 
--- Ensure allowed_roles matches the user's permanent role for all existing users
+-- Initialize any empty permission arrays without removing grants from existing accounts
 UPDATE users
 SET allowed_roles = ARRAY[role]::TEXT[]
-WHERE cardinality(allowed_roles) = 0 OR allowed_roles != ARRAY[role]::TEXT[];
+WHERE cardinality(allowed_roles) = 0;
 
 -- Trigger function to strictly enforce permanent user roles
 CREATE OR REPLACE FUNCTION enforce_permanent_user_role()
@@ -12,7 +12,9 @@ BEGIN
     IF TG_OP = 'UPDATE' AND OLD.role IS DISTINCT FROM NEW.role THEN
         RAISE EXCEPTION 'User roles are permanent and cannot be changed after registration.';
     END IF;
-    NEW.allowed_roles := ARRAY[NEW.role]::TEXT[];
+    IF TG_OP = 'INSERT' THEN
+        NEW.allowed_roles := ARRAY[NEW.role]::TEXT[];
+    END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
