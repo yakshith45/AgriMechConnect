@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your agricultural machinery listings and farmer booking requests on AgriMachConnect.">
+    <title>Owner Dashboard | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="owner-dashboard-page">
+    <header class="owner-header">
+        <a href="/index.html" class="logo-wrap site-brand" aria-label="AgriMachConnect home">
+            <img src="/assets/images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="AgriMachConnect" class="logo-svg">
+            <span class="site-brand-tagline">Rent | Farm | Grow Together.</span>
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" aria-controls="mainNav" aria-expanded="false" type="button">☰</button>
+        <nav id="mainNav" aria-label="Owner navigation">
+            <div class="nav-links">
+                <a href="#dashboardTop" class="active"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"></path></svg><span>Dashboard</span></a>
+                <a href="#myMachinery"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg><span>My Machinery</span></a>
+                <a href="#bookingRequests"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg><span>Booking Requests</span><span class="owner-nav-count" id="ownerPendingNavCount" hidden>0</span></a>
+                <a href="#recentMessages"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.8-.9L4 20l1.1-3.5A7.3 7.3 0 0 1 4 12a7.5 7.5 0 0 1 8-7.5 7.5 7.5 0 0 1 8 7Z"></path><path d="M8 12h.01M12 12h.01M16 12h.01"></path></svg><span>Messages</span><span class="owner-nav-count" id="ownerUnreadNavCount" hidden>0</span></a>
+                <a href="#ownerProfile"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span>Profile</span></a>
+                <a href="#addMachinery" class="btn btn-sm owner-add-nav-button" id="addMachineryButton"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 5v14M5 12h14"></path></svg><span>Add Machinery</span></a>
+                <a href="/index.html" id="logoutLink" class="btn btn-sm btn-outline"><svg class="owner-nav-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path></svg><span>Logout</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="owner-dashboard-main dashboard" id="dashboardTop">
+        <section class="owner-dashboard-hero">
+            <div class="owner-dashboard-hero-copy">
+                <span class="dashboard-hero-tag">Your equipment, managed simply</span>
+                <h1 id="welcomeGreeting">Welcome, <span id="ownerWelcomeName">Machinery Owner</span></h1>
+                <p>Keep your machinery up to date and respond to local farmers in one place.</p>
+            </div>
+        </section>
+
+        <section class="owner-summary-grid" aria-label="Machinery, booking, and message summary">
+            <button type="button" class="owner-summary-card" data-owner-stat="machinery" aria-controls="ownerStatDialog">
+                <span class="owner-summary-icon" aria-hidden="true"><svg class="owner-section-icon" viewBox="0 0 24 24" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg></span>
+                <div><span class="owner-summary-label">My Machinery</span><strong id="ownerMachineryCount" aria-live="polite">—</strong><small>Total listings</small></div>
+            </button>
+            <button type="button" class="owner-summary-card" data-owner-stat="pending" aria-controls="ownerStatDialog">
+                <span class="owner-summary-icon owner-summary-icon-gold" aria-hidden="true"><svg class="owner-section-icon" viewBox="0 0 24 24" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+                <div><span class="owner-summary-label">Pending Bookings</span><strong id="ownerBookingCount" aria-live="polite">—</strong><small>Need your response</small></div>
+            </button>
+            <button type="button" class="owner-summary-card" data-owner-stat="available" aria-controls="ownerStatDialog">
+                <span class="owner-summary-icon owner-summary-icon-green" aria-hidden="true"><svg class="owner-section-icon" viewBox="0 0 24 24" focusable="false"><path d="m5 12 4 4L19 6"></path><circle cx="12" cy="12" r="9"></circle></svg></span>
+                <div><span class="owner-summary-label">Available Machinery</span><strong id="ownerAvailableCount" aria-live="polite">—</strong><small>Ready to book</small></div>
+            </button>
+            <button type="button" class="owner-summary-card" data-owner-stat="messages" aria-controls="ownerStatDialog">
+                <span class="owner-summary-icon owner-summary-icon-message" aria-hidden="true"><svg class="owner-section-icon" viewBox="0 0 24 24" focusable="false"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.8-.9L4 20l1.1-3.5A7.3 7.3 0 0 1 4 12a7.5 7.5 0 0 1 8-7.5 7.5 7.5 0 0 1 8 7Z"></path><path d="M8 12h.01M12 12h.01M16 12h.01"></path></svg></span>
+                <div><span class="owner-summary-label">Unread Messages</span><strong id="ownerUnreadCount" aria-live="polite">—</strong><small>From local farmers</small></div>
+            </button>
+        </section>
+
+        <section class="owner-location-panel" aria-labelledby="ownerLocationTitle">
+            <div class="owner-section-heading">
+                <div><span class="owner-eyebrow">LOCAL PICKUP</span><h2 id="ownerLocationTitle"><svg class="owner-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Your Machinery Locations</h2></div>
+                <p id="ownerSelectedLocation">Loading your confirmed location…</p>
+            </div>
+            <div id="ownerMap" class="owner-map" role="application" aria-label="Map of your machinery pickup locations"></div>
+            <p class="owner-map-attribution">Pickup locations must remain within 25 km of Sullia. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>.</p>
+        </section>
+
+        <section class="owner-content-section" id="myMachinery" aria-labelledby="ownerListingsTitle">
+            <div class="owner-section-heading">
+                <div><span class="owner-eyebrow">YOUR LISTINGS</span><h2 id="ownerListingsTitle"><svg class="owner-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg>My Machinery</h2></div>
+                <a class="btn btn-accent" href="#addMachinery" id="addMachinerySectionButton">＋ Add Machinery</a>
+            </div>
+            <p id="ownerListingStatus" class="form-feedback" role="status" aria-live="polite">Loading your machinery…</p>
+            <div id="ownerListings" class="owner-machinery-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="owner-add-section" id="addMachinery" aria-labelledby="formTitle" hidden>
+            <div class="owner-section-heading">
+                <div><span class="owner-eyebrow">GROW YOUR LOCAL MARKETPLACE</span><h2 id="formTitle">Add Machinery</h2></div>
+                <button type="button" class="btn btn-outline owner-close-form-button" id="closeAddMachinery"><svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg><span>Close</span></button>
+            </div>
+            <p class="owner-form-intro">Share accurate details and a real pickup point so nearby farmers can find your equipment.</p>
+            <form id="machineryForm" class="owner-machinery-form">
+                <section class="owner-form-section owner-form-details">
+                    <h3 class="owner-form-section-title"><svg class="owner-form-section-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 17h11a3 3 0 0 0 3-3v-3h-5l-2-4H8l-2 4H4a2 2 0 0 0-2 2v1a3 3 0 0 0 3 3Zm1-7h4l1 2H5l1-2Zm-2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm13 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"></path><path d="M17 8h3l2 3"></path></svg>Machinery details</h3>
+                    <div class="owner-form-fields">
+                        <label class="form-group" for="name">Machinery name<input id="name" maxlength="200" placeholder="e.g. Mahindra 575 DI" required></label>
+                        <label class="form-group" for="type">Category
+                            <select id="type" required>
+                                <option value="">Choose a category</option><option>Tractor</option><option>Harvester</option><option>Tiller / Rotavator</option><option>Power Tiller</option><option>Adike (Arecanut) Sprayer</option><option>Agricultural Drone</option><option>Trailer</option>
+                            </select>
+                        </label>
+                        <label class="form-group" for="brand">Brand (optional)<input id="brand" maxlength="100" placeholder="e.g. Mahindra"></label>
+                        <label class="form-group" for="model">Model (optional)<input id="model" maxlength="100" placeholder="e.g. 575 DI"></label>
+                        <label class="form-group owner-form-wide" for="description">Description<textarea id="description" maxlength="2000" rows="3" placeholder="Describe the equipment and its condition"></textarea></label>
+                        <label class="form-group" for="condition">Condition (optional)<input id="condition" maxlength="100" placeholder="e.g. Good working condition"></label>
+                        <fieldset class="form-group owner-form-wide owner-specification-fieldset">
+                            <legend>Category specifications</legend>
+                            <div id="categorySpecificationFields" class="owner-specification-grid"></div>
+                        </fieldset>
+                        <label class="form-group owner-form-wide" for="supportedFeatures">Extra features (optional)<input id="supportedFeatures" maxlength="600" placeholder="e.g. GPS, adjustable boom"></label>
+                    </div>
+                </section>
+                <section class="owner-form-section owner-form-photo">
+                    <h3 class="owner-form-section-title"><svg class="owner-form-section-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></svg>Machinery photo</h3>
+                    <div id="machineryPhotoPreview" class="owner-machinery-photo-preview" aria-live="polite">
+                        <svg class="owner-photo-upload-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 16V4m0 0L8 8m4-4 4 4"></path><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path></svg>
+                        <strong>Select a category to preview your machinery</strong>
+                        <small>Upload a clear image to help farmers choose with confidence.</small>
+                    </div>
+                    <label class="owner-photo-dropzone" for="machinePhoto"><svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 16V4m0 0L8 8m4-4 4 4"></path><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path></svg><span>Choose a machinery photo</span><small>PNG, JPEG, or WebP · Up to 3 MB</small><input id="machinePhoto" type="file" accept="image/png,image/jpeg,image/webp"></label>
+                    <button type="button" class="owner-photo-remove" id="removeMachinePhoto" hidden><svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M9 6V4h6v2m-9 0 1 14h10l1-14M10 11v5M14 11v5"></path></svg>Remove selected photo</button>
+                </section>
+                <section class="owner-form-section owner-form-pricing">
+                    <h3 class="owner-form-section-title"><svg class="owner-form-section-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12M6 21h12M8 3c0 5 8 5 8 9s-8 4-8 9"></path><path d="M8 8h8M8 16h8"></path></svg>Pricing</h3>
+                    <div class="owner-form-fields">
+                        <label class="form-group" for="price">Rental price (₹)<input id="price" type="number" min="0.01" step="0.01" placeholder="Enter a price" required></label>
+                        <label class="form-group" for="priceUnit">Pricing unit
+                            <select id="priceUnit" required><option value="day">Per day</option><option value="hour">Per hour</option></select>
+                        </label>
+                    </div>
+                </section>
+                <section class="owner-form-section owner-form-location">
+                    <h3 class="owner-form-section-title"><svg class="owner-form-section-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Pickup location</h3>
+                    <div class="form-group owner-form-wide">
+                    <label for="location">Search pickup village, gram panchayat, or address</label>
+                    <div class="location-search-row">
+                        <svg class="location-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                        <input id="location" maxlength="200" placeholder="Search a village or address near Sullia" autocomplete="off" aria-describedby="pickupSearchHelp" required>
+                        <button type="button" class="btn btn-outline location-current-button" id="useCurrentPickupLocation">
+                            <svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg> Use my location
+                        </button>
+                    </div>
+                    <p id="pickupSearchHelp" class="location-search-help">Choose a search result, click the map, or drag the marker. Pickup points must be within 25 km of Sullia.</p>
+                    <div id="pickupSearchResults" class="location-search-results" role="listbox" aria-label="Pickup location search results" hidden></div>
+                    <div id="ownerPickupMap" class="owner-map owner-pickup-map location-map" role="application" aria-label="Choose machinery pickup location"></div>
+                    <p class="owner-map-attribution">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>. Search by <a href="https://photon.komoot.io/" target="_blank" rel="noreferrer">Photon</a>.</p>
+                    <p id="pickupLocationMessage" class="owner-map-hint" role="status" aria-live="polite">Map centered on Sullia, Dakshina Kannada, Karnataka.</p>
+                    </div>
+                    <div class="owner-form-fields">
+                        <label class="form-group" for="latitude">Latitude<input id="latitude" type="number" min="-90" max="90" step="any" required></label>
+                        <label class="form-group" for="longitude">Longitude<input id="longitude" type="number" min="-180" max="180" step="any" required></label>
+                    </div>
+                </section>
+                <section class="owner-form-section owner-form-availability">
+                    <h3 class="owner-form-section-title"><svg class="owner-form-section-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Availability</h3>
+                    <fieldset class="owner-availability-fieldset">
+                        <legend>Availability window (optional)</legend>
+                        <div class="owner-specification-grid">
+                            <label for="availabilityStartDate">From date<input id="availabilityStartDate" type="date"></label>
+                            <label for="availabilityEndDate">Through date<input id="availabilityEndDate" type="date"></label>
+                            <label for="availabilityStartTime">Daily start time<input id="availabilityStartTime" type="time"></label>
+                            <label for="availabilityEndTime">Daily end time<input id="availabilityEndTime" type="time"></label>
+                        </div>
+                    </fieldset>
+                    <label class="owner-availability-control"><input id="availability" type="checkbox" checked><span class="owner-toggle-track" aria-hidden="true"></span><span>Available for booking</span></label>
+                </section>
+                <div class="owner-form-actions owner-form-wide">
+                    <button id="submitListing" type="submit" class="btn btn-accent"><svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 2.5 2.5L16 9"></path></svg><span>Publish Machinery Listing</span></button>
+                    <button id="cancelEdit" type="button" class="btn btn-outline" hidden><svg class="owner-form-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg><span>Cancel edit</span></button>
+                </div>
+            </form>
+            <p id="machineMessage" class="form-feedback" role="status" aria-live="polite"></p>
+            <div id="ownerFormToast" class="owner-form-toast" role="status" aria-live="polite" hidden></div>
+        </section>
+
+        <section class="owner-content-section" id="bookingRequests" aria-labelledby="bookingRequestsTitle">
+            <div class="owner-section-heading">
+                <div><span class="owner-eyebrow">FARMER ENQUIRIES</span><h2 id="bookingRequestsTitle"><svg class="owner-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Pending Bookings</h2></div>
+                <span id="ownerPendingBadge" class="owner-pending-badge" hidden>0 pending</span>
+            </div>
+            <p id="bookingMessage" class="form-feedback" role="status" aria-live="polite"></p>
+            <div id="bookingList" class="owner-booking-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="owner-content-section" id="recentMessages" aria-labelledby="recentMessagesTitle">
+            <div class="owner-section-heading">
+                <div><span class="owner-eyebrow">FARMER CONVERSATIONS</span><h2 id="recentMessagesTitle"><svg class="owner-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.8-.9L4 20l1.1-3.5A7.3 7.3 0 0 1 4 12a7.5 7.5 0 0 1 8-7.5 7.5 7.5 0 0 1 8 7Z"></path><path d="M8 12h.01M12 12h.01M16 12h.01"></path></svg>Recent Messages</h2></div>
+                <span id="ownerMessagesUnreadSummary" class="owner-messages-unread-summary">Loading messages…</span>
+            </div>
+            <p id="ownerMessagesStatus" class="form-feedback" role="status" aria-live="polite">Loading your recent conversations…</p>
+            <div id="ownerRecentMessages" class="owner-messages-list" aria-live="polite"></div>
+        </section>
+
+        <section class="owner-profile-panel" id="ownerProfile" aria-labelledby="ownerProfileTitle">
+            <div>
+                <span class="owner-eyebrow">ACCOUNT</span>
+                <h2 id="ownerProfileTitle"><svg class="owner-heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Your Profile</h2>
+                <p id="ownerProfileDetails">Loading your owner account…</p>
+            </div>
+            <a class="btn btn-outline" href="/pages/auth/select-role-location.html">Update profile &amp; location</a>
+        </section>
+    </main>
+
+    <dialog id="ownerStatDialog" class="owner-stat-dialog" aria-labelledby="ownerStatDialogTitle">
+        <div class="owner-stat-dialog-header">
+            <div>
+                <span class="owner-eyebrow">LIVE ACCOUNT SUMMARY</span>
+                <h2 id="ownerStatDialogTitle">Dashboard details</h2>
+            </div>
+            <button type="button" class="owner-dialog-close" id="ownerStatDialogClose" aria-label="Close details">×</button>
+        </div>
+        <div id="ownerStatDialogContent" class="owner-stat-dialog-content" aria-live="polite"></div>
+    </dialog>
+
+    <dialog id="ownerChatDialog" class="owner-chat-dialog" aria-labelledby="ownerChatTitle">
+        <div class="owner-chat-dialog-header">
+            <div>
+                <span class="owner-eyebrow">FARMER CONVERSATION</span>
+                <h2 id="ownerChatTitle">Messages</h2>
+                <p id="ownerChatMachinery"></p>
+            </div>
+            <button type="button" class="btn btn-outline" id="ownerChatClose">Close</button>
+        </div>
+        <p id="ownerChatStatus" class="form-feedback" role="status" aria-live="polite"></p>
+        <div id="ownerChatHistory" class="owner-chat-history" aria-live="polite"></div>
+        <form id="ownerChatForm" class="owner-chat-form">
+            <label for="ownerChatInput">Write a message</label>
+            <textarea id="ownerChatInput" maxlength="2000" rows="3" required></textarea>
+            <button type="submit" class="btn btn-accent" id="ownerChatSend">Send message</button>
+        </form>
+    </dialog>
+
+    <footer class="owner-dashboard-footer"><div class="footer-bottom">&copy; 2026 AgriMachConnect. Renting equipment, growing together.</div></footer>
+
+    <script>
+        const mobileToggle = document.getElementById("mobileToggle");
+        const mainNav = document.getElementById("mainNav");
+        mobileToggle.addEventListener("click", () => {
+            const isOpen = mainNav.classList.toggle("show");
+            mobileToggle.setAttribute("aria-expanded", String(isOpen));
+        });
+        document.getElementById("logoutLink").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+        });
+        for (const buttonId of ["addMachineryButton", "addMachinerySectionButton"]) {
+            document.getElementById(buttonId).addEventListener("click", () => {
+                document.getElementById("addMachinery").hidden = false;
+                mainNav.classList.remove("show");
+                mobileToggle.setAttribute("aria-expanded", "false");
+                window.dispatchEvent(new Event("owner-add-section-open"));
+            });
+        }
+        document.getElementById("closeAddMachinery").addEventListener("click", () => {
+            document.getElementById("addMachinery").hidden = true;
+        });
+        try {
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (user?.role === "owner") {
+                document.getElementById("ownerWelcomeName").textContent = user.name || "Machinery Owner";
+                document.getElementById("ownerSelectedLocation").textContent = user.selected_location || "Choose a pickup point for each machinery listing.";
+                document.getElementById("ownerProfileDetails").textContent = [user.name, user.email, user.phone, user.selected_location].filter(Boolean).join(" · ");
+            } else {
+                document.getElementById("ownerProfileDetails").textContent = "Confirm your Machinery Owner role and location to manage your account.";
+            }
+        } catch (error) {
+            console.error("Owner account details could not be read.", error);
+        }
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/assets/js/common/api.js"></script>
+    <script src="/assets/js/pages/owner/owner.js"></script>
+    <script src="/assets/js/pages/owner/booking-requests.js"></script>
+</body>
+</html>

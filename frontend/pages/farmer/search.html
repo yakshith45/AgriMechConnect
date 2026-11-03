@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search and book agricultural machinery near you on AgriMech Connect - Tractors, harvesters, cultivators, and drones.">
+    <title>Find Machinery | AgriMech Connect</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script>window.location.replace("/pages/farmer/farmer-dashboard.html");</script>
+</head>
+
+<body>
+
+<header>
+    <a href="/index.html" class="logo-wrap" aria-label="AgriMech Connect Home">
+        <img src="/assets/images/logo.svg" alt="AgriMech Connect" class="logo-svg" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+        <div id="logoFallback" class="logo-text-fallback" style="display:none;">
+            🌾 Agri<span>Mech</span> Connect
+        </div>
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" type="button">
+        ☰
+    </button>
+
+    <nav id="mainNav">
+        <div class="nav-links">
+            <a href="/index.html">Home</a>
+            <a href="/pages/farmer/search.html" class="active">Find Machinery</a>
+            <a href="/pages/owner/owner-dashboard.html" class="nav-cta nav-cta-owner">🚜 Owner Portal</a>
+            <a href="/pages/auth/register.html?role=owner" class="btn btn-sm btn-outline">📝 Register as Owner</a>
+            <a href="/pages/auth/register.html?role=farmer" class="btn btn-sm btn-accent">👨‍🌾 Farmer Register</a>
+            <a href="/pages/farmer/farmer-dashboard.html" class="nav-cta nav-cta-farmer">Farmer Portal</a>
+            <a href="/pages/farmer/my-bookings.html">My Bookings</a>
+        </div>
+    </nav>
+</header>
+
+<main class="dashboard">
+    <!-- Header Title -->
+    <div style="margin-bottom: 24px;">
+        <span class="section-tag" style="margin-bottom: 8px;">Equipment Catalog</span>
+        <h1 id="machinery" style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--ink-900); margin: 0 0 8px; letter-spacing: -0.03em;">
+            Available Agricultural Machinery
+        </h1>
+        <p style="color: var(--ink-500); font-size: 1.05rem; margin: 0;">
+            Browse tractors, harvesters, tillers, and drones available for rent across registered districts.
+        </p>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <section class="search-toolbar" id="location" aria-labelledby="locationHeading">
+        <div class="search-toolbar-header">
+            <!-- Search bar -->
+            <div class="search-input-group">
+                <span class="search-input-icon">🔍</span>
+                <input
+                    type="text"
+                    id="machinerySearchInput"
+                    placeholder="Search by equipment name, brand, or type..."
+                    aria-label="Search machinery"
+                >
+            </div>
+
+            <!-- Category filter chips -->
+            <div class="filter-chips" id="categoryFilterChips">
+                <button type="button" class="filter-chip" data-category="tractor">Tractors</button>
+                <button type="button" class="filter-chip" data-category="harvester">Harvesters</button>
+                <button type="button" class="filter-chip" data-category="rotavator">Tiller / Rotavator</button>
+                <button type="button" class="filter-chip" data-category="power-tiller">Power Tiller</button>
+                <button type="button" class="filter-chip" data-category="adike-sprayer">Adike (Arecanut) Sprayer</button>
+                <button type="button" class="filter-chip" data-category="drone">Drones</button>
+                <button type="button" class="filter-chip" data-category="trailer">Trailers</button>
+            </div>
+        </div>
+
+        <!-- Location Geolocation Bar -->
+        <div class="location-action-bar">
+            <div class="location-info">
+                <span>📍</span>
+                <span id="locationMessage">
+                    Click "Find Closest to Me" to show machinery closest to your farm coordinates first.
+                </span>
+            </div>
+
+            <button id="useLocationButton" class="btn btn-sm btn-accent" type="button">
+                📍 Find Closest to Me
+            </button>
+        </div>
+    </section>
+
+    <!-- Machinery Cards Grid -->
+    <div id="machineryList" class="machinery-grid">
+        <!-- Rendered dynamically by /assets/js/pages/farmer/farmer.js -->
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="logo-wrap">
+                <img src="/assets/images/logo.svg" alt="AgriMech Connect" class="logo-svg" style="height: 36px;">
+            </div>
+            <p>
+                Providing seamless agricultural machinery rental across rural and peri-urban agricultural belts.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Farmer Links</h4>
+            <ul>
+                <li><a href="/pages/farmer/farmer-dashboard.html">Farmer Dashboard</a></li>
+                <li><a href="/pages/farmer/search.html">Explore Catalog</a></li>
+                <li><a href="/pages/farmer/my-bookings.html">My Bookings</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Owner Links</h4>
+            <ul>
+                <li><a href="/pages/owner/owner-dashboard.html">Owner Dashboard</a></li>
+                <li><a href="/pages/owner/add-machinery.html">List Machine</a></li>
+                <li><a href="/pages/owner/booking-requests.html">Booking Requests</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div>&copy; 2026 AgriMech Connect. All rights reserved.</div>
+    </div>
+</footer>
+
+<script>
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mainNav = document.getElementById("mainNav");
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener("click", () => mainNav.classList.toggle("show"));
+    }
+</script>
+
+</body>
+</html>

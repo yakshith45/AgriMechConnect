@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your AgriMachConnect account.">
+    <title>Register | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body class="register-page">
+
+<main class="auth-main">
+    <div class="agri-backdrop" aria-hidden="true">
+        <div class="agri-aura agri-aura-one"></div>
+        <div class="agri-aura agri-aura-two"></div>
+        <div class="agri-light-trail agri-light-trail-one"></div>
+        <div class="agri-light-trail agri-light-trail-two"></div>
+        <div class="agri-sprig agri-sprig-left">
+            <span class="agri-leaf leaf-one"></span>
+            <span class="agri-leaf leaf-two"></span>
+            <span class="agri-leaf leaf-three"></span>
+            <span class="agri-leaf leaf-four"></span>
+            <span class="agri-stem"></span>
+        </div>
+        <div class="agri-sprig agri-sprig-right">
+            <span class="agri-leaf leaf-one"></span>
+            <span class="agri-leaf leaf-two"></span>
+            <span class="agri-leaf leaf-three"></span>
+            <span class="agri-leaf leaf-four"></span>
+            <span class="agri-stem"></span>
+        </div>
+        <span class="agri-particle particle-one"></span>
+        <span class="agri-particle particle-two"></span>
+        <span class="agri-particle particle-three"></span>
+        <span class="agri-particle particle-four"></span>
+    </div>
+    <section class="auth-card form-container" aria-labelledby="registerTitle">
+        <div class="form-header">
+            <h1 id="registerTitle">Create Your Account</h1>
+            <p>Join AgriMachConnect and get started.</p>
+        </div>
+
+        <p class="role-permission-note">
+            <svg class="role-permission-note-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="10" cy="10" r="8"/>
+                <line x1="10" y1="7" x2="10" y2="10"/>
+                <circle cx="10" cy="13.5" r="0.8" fill="currentColor"/>
+            </svg>
+            <span><strong>Role Permanence Policy:</strong> Choose your role carefully. User roles are permanent and cannot be changed after registration.</span>
+        </p>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <div class="role-selection-label">
+                    <span>Choose Your Account Role</span>
+                    <span>Permanent &amp; Fixed</span>
+                </div>
+                <div class="role-choice-group" role="radiogroup" aria-label="Select Account Role">
+                    <label class="role-choice is-selected" for="roleFarmer" id="cardRoleFarmer">
+                        <input type="radio" id="roleFarmer" name="role" value="farmer" checked>
+                        <div class="role-card-top">
+                            <div class="role-icon-badge" aria-hidden="true">
+                                <svg class="role-svg-illustration" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                                    <circle cx="24" cy="24" r="22" fill="url(#farmer-grad)" stroke="#34d399" stroke-width="1.5" stroke-opacity="0.5"/>
+                                    <path d="M24 10V6M34 14L37 11M38 24H42" stroke="#ffda62" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8"/>
+                                    <path d="M24 38C24 28 24 18 24 14" stroke="#ffda62" stroke-width="2.5" stroke-linecap="round"/>
+                                    <path d="M24 20C21 17 16 18 16 21C16 24 21 23 24 22" fill="#34d399" stroke="#10b981" stroke-width="1.2"/>
+                                    <path d="M24 26C27 23 32 24 32 27C32 30 27 29 24 28" fill="#34d399" stroke="#10b981" stroke-width="1.2"/>
+                                    <path d="M24 14C22 11 18 12 18 15C18 18 22 17 24 16" fill="#ffd147" stroke="#e5b838" stroke-width="1.2"/>
+                                    <path d="M24 14C26 11 30 12 30 15C30 18 26 17 24 16" fill="#ffd147" stroke="#e5b838" stroke-width="1.2"/>
+                                    <path d="M12 38C16 34 22 35 24 38C26 35 32 34 36 38" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+                                    <defs>
+                                        <linearGradient id="farmer-grad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#14532d" stop-opacity="0.7"/>
+                                            <stop offset="1" stop-color="#052e16" stop-opacity="0.9"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="role-choice-check" aria-hidden="true">
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="role-title-row">
+                            <strong class="role-title">Farmer</strong>
+                            <span class="role-tag">Renter</span>
+                        </div>
+                        <p class="role-desc">Find and rent agricultural machinery.</p>
+                        <ul class="role-benefits-list">
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>Find and rent machinery</span>
+                            </li>
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>Save time and costs</span>
+                            </li>
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>Improve farming productivity</span>
+                            </li>
+                        </ul>
+                    </label>
+                    <label class="role-choice" for="roleOwner" id="cardRoleOwner">
+                        <input type="radio" id="roleOwner" name="role" value="owner">
+                        <div class="role-card-top">
+                            <div class="role-icon-badge" aria-hidden="true">
+                                <svg class="role-svg-illustration" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                                    <circle cx="24" cy="24" r="22" fill="url(#owner-grad)" stroke="#ffda62" stroke-width="1.5" stroke-opacity="0.5"/>
+                                    <path d="M36 14L38 15.5M38 15.5L36.5 17.5M38 15.5L40 15.5" stroke="#ffda62" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M15 25H27V17C27 15.5 25.5 15 24 15H17C15.5 15 15 16 15 17V25Z" fill="#10b981" fill-opacity="0.3" stroke="#34d399" stroke-width="1.8"/>
+                                    <path d="M18 18H24V23H18V18Z" fill="#a7f3d0" fill-opacity="0.4"/>
+                                    <path d="M27 21H34C35.5 21 36 22 36 23.5V28H27V21Z" fill="#10b981" stroke="#34d399" stroke-width="1.8"/>
+                                    <path d="M32 21V16H30" stroke="#ffda62" stroke-width="1.8" stroke-linecap="round"/>
+                                    <circle cx="18" cy="30" r="7" fill="#042113" stroke="#ffda62" stroke-width="2.2"/>
+                                    <circle cx="18" cy="30" r="3" fill="#ffda62"/>
+                                    <circle cx="33" cy="32" r="4.5" fill="#042113" stroke="#34d399" stroke-width="2"/>
+                                    <circle cx="33" cy="32" r="1.8" fill="#34d399"/>
+                                    <path d="M25 30H28.5" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+                                    <defs>
+                                        <linearGradient id="owner-grad" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#14532d" stop-opacity="0.7"/>
+                                            <stop offset="1" stop-color="#052e16" stop-opacity="0.9"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="role-choice-check" aria-hidden="true">
+                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="role-title-row">
+                            <strong class="role-title">Machinery Owner</strong>
+                            <span class="role-tag owner-tag">Partner</span>
+                        </div>
+                        <p class="role-desc">List machinery and manage rental bookings.</p>
+                        <ul class="role-benefits-list">
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>List machinery</span>
+                            </li>
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>Manage rental bookings</span>
+                            </li>
+                            <li>
+                                <svg class="benefit-check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3.5 8.5 6.5 11.5 12.5 4.5"/></svg>
+                                <span>Earn rental income</span>
+                            </li>
+                        </ul>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <div class="registration-input-wrap">
+                    <svg class="registration-input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.4 3.1-5.2 7-5.2s6.3 1.8 7 5.2"/></svg>
+                    <input type="text" id="fullName" name="name" placeholder="e.g. Ramesh Kumar" autocomplete="name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Mobile Number</label>
+                <div class="registration-input-wrap">
+                    <svg class="registration-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4.5 9.6 4l2 4.5-1.8 1.6a13.3 13.3 0 0 0 4.1 4.1l1.6-1.8 4.5 2-.5 2.1c-.3 1.2-1.5 2-2.7 1.8C10.5 17.4 6.6 13.5 5.7 7.2c-.2-1.2.6-2.4 1.8-2.7Z"/></svg>
+                    <input type="tel" id="phoneNumber" name="phone" placeholder="e.g. +91 98765 43210" autocomplete="tel" inputmode="tel" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="emailAddress">Email Address</label>
+                <div class="registration-input-wrap">
+                    <svg class="registration-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4.5 7 7.5 5.2L19.5 7"/></svg>
+                    <input type="email" id="emailAddress" name="email" placeholder="e.g. ramesh@gmail.com" autocomplete="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="passwordField">Account Password</label>
+                <div class="password-input-wrap">
+                    <svg class="registration-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                    <input type="password" id="passwordField" name="password" placeholder="Choose a password" autocomplete="new-password" required>
+                    <button type="button" class="password-visibility-toggle" data-password-target="passwordField" aria-controls="passwordField" aria-pressed="false">Show</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPasswordField">Confirm Password</label>
+                <div class="password-input-wrap">
+                    <svg class="registration-input-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="12" height="9" rx="2"/><path d="M7 10V7a3 3 0 0 1 6 0v3M17 16l1.5 1.5L21 14"/></svg>
+                    <input type="password" id="confirmPasswordField" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required>
+                    <button type="button" class="password-visibility-toggle" data-password-target="confirmPasswordField" aria-controls="confirmPasswordField" aria-pressed="false">Show</button>
+                </div>
+            </div>
+            <p id="registrationFeedback" class="form-feedback" role="alert" aria-live="polite"></p>
+            <button type="submit" class="btn btn-accent" id="registerButton">Create Account</button>
+            <p class="auth-switch">Already have an account? <a href="/pages/auth/login.html">Log in</a></p>
+        </form>
+    </section>
+</main>
+
+<div class="registration-success-overlay" id="registrationSuccess" hidden>
+    <section class="registration-success-dialog" role="dialog" aria-modal="true" aria-labelledby="registrationSuccessTitle" aria-describedby="registrationSuccessMessage">
+        <div class="registration-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path d="m8 16.5 5.2 5.2L24.5 10"/>
+            </svg>
+        </div>
+        <h2 id="registrationSuccessTitle">Registration Successful!</h2>
+        <p id="registrationSuccessMessage">Your account has been created successfully.</p>
+        <button type="button" class="btn btn-accent" id="registrationSuccessOk">OK</button>
+    </section>
+</div>
+
+<script src="/assets/js/common/api.js"></script>
+<script>
+    const registrationForm = document.getElementById("registrationForm");
+    const feedback = document.getElementById("registrationFeedback");
+    const submitButton = document.getElementById("registerButton");
+    const phoneInput = document.getElementById("phoneNumber");
+    const passwordInput = document.getElementById("passwordField");
+    const confirmationInput = document.getElementById("confirmPasswordField");
+    const successPopup = document.getElementById("registrationSuccess");
+
+    document.querySelectorAll(".password-visibility-toggle").forEach(toggle => {
+        toggle.addEventListener("click", () => {
+            const input = document.getElementById(toggle.dataset.passwordTarget);
+            const showPassword = input.type === "password";
+            input.type = showPassword ? "text" : "password";
+            toggle.textContent = showPassword ? "Hide" : "Show";
+            toggle.setAttribute("aria-pressed", String(showPassword));
+            input.focus();
+        });
+    });
+
+    function validateMobileNumber() {
+        const normalizedPhone = phoneInput.value.replace(/[()\s-]/g, "");
+        const isValid = /^(?:\+?91)?[6-9]\d{9}$/.test(normalizedPhone);
+        phoneInput.setCustomValidity(isValid ? "" : "Enter a valid 10-digit Indian mobile number.");
+    }
+
+    function validatePasswordMatch() {
+        confirmationInput.setCustomValidity(
+            confirmationInput.value && confirmationInput.value !== passwordInput.value
+                ? "Passwords do not match."
+                : ""
+        );
+    }
+
+    phoneInput.addEventListener("input", validateMobileNumber);
+    passwordInput.addEventListener("input", validatePasswordMatch);
+    confirmationInput.addEventListener("input", validatePasswordMatch);
+
+    registrationForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        feedback.textContent = "";
+        feedback.className = "form-feedback";
+
+        const name = document.getElementById("fullName").value.trim();
+        const emailInput = document.getElementById("emailAddress");
+        const email = emailInput.value.trim();
+        validateMobileNumber();
+        validatePasswordMatch();
+
+        if (!name) {
+            document.getElementById("fullName").setCustomValidity("Enter your full name.");
+        } else {
+            document.getElementById("fullName").setCustomValidity("");
+        }
+        if (!email) {
+            emailInput.setCustomValidity("Enter your email address.");
+        } else {
+            emailInput.setCustomValidity("");
+        }
+        if (!registrationForm.reportValidity()) {
+            return;
+        }
+
+        const preferredRole = new URLSearchParams(window.location.search).get("role");
+        if (preferredRole === "owner") {
+            const ownerRadio = document.getElementById("roleOwner");
+            if (ownerRadio) {
+                ownerRadio.checked = true;
+                syncRoleCardSelection();
+            }
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Creating Account...";
+
+        try {
+            const selectedRole = document.querySelector('input[name="role"]:checked')?.value || "farmer";
+            const data = await AgriMachApi.request("/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    phone: phoneInput.value.trim(),
+                    password: passwordInput.value,
+                    role: selectedRole
+                })
+            });
+            if (!data.user || !data.token) {
+                throw new Error("The server confirmed the request but returned an incomplete account session. Try logging in before submitting registration again.");
+            }
+            const roleLabel = selectedRole === "owner" ? "Machinery Owner" : "Farmer";
+            document.getElementById("registrationSuccessMessage").textContent =
+                `Your ${roleLabel} account has been created successfully. Your role is permanent and cannot be changed.`;
+            successPopup.hidden = false;
+            document.getElementById("registrationSuccessOk").focus();
+        } catch (error) {
+            console.error("Registration request failed:", error);
+            feedback.className = "form-feedback error";
+            const errorMessage = error instanceof Error
+                ? error.message
+                : "Registration could not be completed.";
+            feedback.textContent = error?.status === undefined &&
+                errorMessage.toLowerCase().includes("timed out")
+                ? `${errorMessage} The server may still finish processing; try logging in before submitting registration again.`
+                : errorMessage;
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Create Account";
+        }
+    });
+
+    function syncRoleCardSelection() {
+        const farmerChecked = document.getElementById("roleFarmer")?.checked;
+        const farmerCard = document.getElementById("cardRoleFarmer");
+        const ownerCard = document.getElementById("cardRoleOwner");
+        if (farmerCard && ownerCard) {
+            farmerCard.classList.toggle("is-selected", Boolean(farmerChecked));
+            ownerCard.classList.toggle("is-selected", !farmerChecked);
+        }
+    }
+
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+        radio.addEventListener("change", syncRoleCardSelection);
+    });
+
+    const urlRole = new URLSearchParams(window.location.search).get("role");
+    if (urlRole === "owner") {
+        const ownerRadio = document.getElementById("roleOwner");
+        if (ownerRadio) {
+            ownerRadio.checked = true;
+            syncRoleCardSelection();
+        }
+    } else {
+        syncRoleCardSelection();
+    }
+
+    document.getElementById("registrationSuccessOk").addEventListener("click", () => {
+        window.location.href = "/pages/auth/login.html";
+    });
+
+</script>
+
+</body>
+</html>

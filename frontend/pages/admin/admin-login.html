@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Private AgriMachConnect administrator sign in.">
+    <title>Admin sign in | AgriMachConnect</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="admin-login-page">
+    <main class="admin-login-shell">
+        <a class="admin-brand" href="/index.html" aria-label="AgriMachConnect home">
+            <img src="/assets/images/AgriMachConnect%20Leaf%20Gear%20Logo.png" alt="">
+            <span><strong>AgriMachConnect</strong><small>Administrator access</small></span>
+        </a>
+        <section class="admin-login-card" aria-labelledby="adminLoginTitle">
+            <div class="admin-login-mark" aria-hidden="true">✦</div>
+            <p class="admin-eyebrow">SECURE ADMIN PORTAL</p>
+            <h1 id="adminLoginTitle">Administrator sign in</h1>
+            <p class="admin-login-intro">This private page is for authorized administrators.</p>
+            <form id="adminLoginForm">
+                <label class="admin-field">
+                    <span>Email address</span>
+                    <input id="adminEmail" name="email" type="email" autocomplete="username" required>
+                </label>
+                <label class="admin-field">
+                    <span>Password</span>
+                    <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
+                </label>
+                <p id="adminLoginMessage" class="admin-message" role="status" aria-live="polite"></p>
+                <button id="adminLoginSubmit" class="admin-button admin-button-primary admin-button-wide" type="submit">Sign in securely</button>
+            </form>
+            <a class="admin-back-link" href="/index.html">← Back to AgriMachConnect</a>
+        </section>
+        <p class="admin-login-footnote">Administrator actions are authenticated and audited.</p>
+    </main>
+    <script src="/assets/js/common/api.js"></script>
+    <script src="/assets/js/pages/admin/admin-login.js"></script>
+</body>
+</html>
